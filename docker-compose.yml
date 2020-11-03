@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  web:
+    build: ./node
+    image: cookhack
+    volumes:
+      - ./node/app:/app
+    ports:
+      - "8080:3000"
+    tty: true
+  db:
+    image: postgres:12.3-alpine
+    environment:
+      TZ: UTC
+      PGTZ: UTC
+      IMPORT_FROM_DIR: /data
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DB
+    volumes:
+      - ./db/data:/var/lib/postgresql/data

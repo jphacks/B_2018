@@ -2,19 +2,22 @@ version: '3'
 
 services:
   web:
+    env_file: ./.env
     build: ./node
     image: cookhack
     volumes:
-      - ./node/app:/app
+      - ${SCRIPTS_SRC}:${WORKDIR}
     ports:
-      - "8080:3000"
+      - "${FRONT_PORT}:${CONTAINER_PORT}"
     tty: true
   db:
+    env_file: ./.env
     image: postgres:12.3-alpine
     environment:
       TZ: UTC
       PGTZ: UTC
       IMPORT_FROM_DIR: /data
+      POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
       POSTGRES_DB: $POSTGRES_DB
     volumes:

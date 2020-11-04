@@ -1,5 +1,5 @@
 .env
-node/app/node_modules
-db/data/
+node/app/node_modules/*
+db/data/*
 !db/data/*.sql
 !db/data/*.dump

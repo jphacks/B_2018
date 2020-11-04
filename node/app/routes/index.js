@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 const pg = require('pg');
 
-const pool = pg.Pool({
-  database: 'user',
-  user: 'postgres',
+const pool = new pg.Pool({
+  database: 'cookhack',
+  user: 'root',
   password: 'password',
   host: 'localhost',
   port: 5432,
@@ -32,9 +32,6 @@ router.get('/menu/:id', function(req, res){
   res.render('menu');
 });
 
-router.get('/tomato', function(req, res){
-  res.render('index');
-});
 
 /* POST */
 

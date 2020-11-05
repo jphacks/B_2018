@@ -3,32 +3,70 @@
 
 <head>
     <title>Home</title>
-    <link rel='stylesheet' href='../public/stylesheets/home.css' />
+    <link rel='stylesheet' href='/stylesheets/home.css' />
+    <script src="/send_url.js"></script>
+    <link href="https://fonts.googleapis.com/earlyaccess/hannari.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/earlyaccess/nikukyu.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/earlyaccess/kokoro.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
 </head>
 
 <body>
     <header>
+        <!-- partial -->
+        <%- include('header.ejs') %>
+    </header>
+
+    <div id="top">
         <h1>
             CookHack
         </h1>
-    </header>
+    </div>
+    <!--
     <div id="container_title">
-        <div id="title">
+        <div class="box_recommend">
+            <div id="title">
+                あなたにおすすめ！
+            </div>
+    </div>
+     -->
+    <div id="titlebox">
+        <h2>
             あなたにおすすめ！
-        </div>
+        </h2>
+    </div>
+
     </div>
     <div id="container_menu">
-        <div>
-            a
+        <div class="box">
+            レシピ名だよ！
+            <ul>
+                <li>
+                    炭水化物:
+                </li>
+                <li>
+                    脂質:
+                </li>
+                <li>
+                    タンパク質:
+                </li>
+            </ul>
+            <a href="https://www.google.co.jp"></a>
         </div>
-        <div>
+        <div class="box">
             b
+            <a href="https://www.google.co.jp"></a>
         </div>
-        <div id="menu">
+        <div class="box">
             c
+            <a href="https://www.google.co.jp"></a>
         </div>
-        <div>
+        <div class="box">
             Look More Information
+            <a href="https://www.google.co.jp"></a>
         </div>
     </div>
     <footer>

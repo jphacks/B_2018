@@ -1,0 +1,13 @@
+search.ejs
+          <% recipes.forEach((recipe) => { %>
+            <li>
+              <table>
+                <td>
+                  <%= recipe.name %>
+                </td> 
+                <td>
+                  <%= recipe.desc %>
+                </td>
+              </table>
+            </li>
+          <% }) %>

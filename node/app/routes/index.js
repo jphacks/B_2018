@@ -40,7 +40,16 @@ router.get('/init', function(req, res){
 
 
 /* POST */
-
+router.post('/search', function(req, res){
+  /*connection.query(
+    'SELECT * FROM recipes WHERE name = ?',
+    [ req.body.searchword ],
+    (error, results) => {
+      res.render('search');
+    }
+  );*/
+  res.render('search');
+});
 
 /* init_data */
 router.post('/init_table', function(req, res){

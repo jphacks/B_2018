@@ -40,20 +40,9 @@ router.get('/init', function(req, res){
 
 
 /* POST */
-/*router.post('/', function(req, res){
-  connection.query(
-    'SELECT * FROM cookhack.Recipe WHERE name = ?',
-    [ req.body.searchword ],
-    (error, results) => {
-      res.render('search', { recipes: results });
-    }
-  );
-  //res.render('search');
-});*/
-
 router.post('/search', (req, res) => {
   var query = {
-    text: 'SELECT * FROM cookhack.Recipe WHERE name = ?',
+    text: 'SELECT * FROM cookhack.Recipe WHERE name = $1',
     values: [ req.body.searchword ],
   };
 
@@ -64,18 +53,9 @@ router.post('/search', (req, res) => {
       return;
     }else{
       client.query(query, function(err, result){
-        res.render('search', { recipes: [result] });
-        console.log(result);
+        res.render('search', { recipes: result.rows, search: query });
       });
     }
-  /*connection.query(
-    'SELECT * FROM cookhack.Recipe WHERE name = ?',
-    [ req.body.searchword ],
-    (error, results) => {
-      res.render('search', { recipes: results });
-    }
-  );*/
-  //res.render('search');
   });
 });
 

@@ -13,21 +13,22 @@
     </header>
     <main>
       <div class="titlearea">
-        kensaku moziretu
+        <h3>検索文字列:
+        <%= search.values[0] %></h3>
       </div>
       <div class="index-table-wrapper">
-        <ul class="table-body">
-          <% recipes.forEach((recipe) => { %>
-            <li>
-              <table>
-                <td>
-                  <%= recipe.name %>
-                </td> 
-                <td>
-                  <%= recipe.desc %>
-                </td>
-              </table>
-            </li>
+        <ul class="table-body" style="list-style: none">
+        <% recipes.forEach((recipe) => { %>
+          <li>
+            <table>
+              <td style="width: 100px">
+                <%= recipe.name %>
+              </td>
+              <td>
+                <%= recipe.description %>
+              </td>
+            </table>
+          </li>
           <% }) %>
         </ul>
       </div>

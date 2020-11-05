@@ -1,0 +1,2 @@
+SELECT recipe.id, recipe.name FROM cookhack.recipe
+WHERE recipe.name = (?);

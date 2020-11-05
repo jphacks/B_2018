@@ -17,7 +17,18 @@
       </div>
       <div class="index-table-wrapper">
         <ul class="table-body">
-
+          <% recipes.forEach((recipe) => { %>
+            <li>
+              <table>
+                <td>
+                  <%= recipe.name %>
+                </td> 
+                <td>
+                  <%= recipe.desc %>
+                </td>
+              </table>
+            </li>
+          <% }) %>
         </ul>
       </div>
     </main>

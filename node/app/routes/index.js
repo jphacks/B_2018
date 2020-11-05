@@ -40,15 +40,23 @@ router.get('/init', function(req, res){
 
 
 /* POST */
-router.post('/search', function(req, res){
-  /*connection.query(
-    'SELECT * FROM recipes WHERE name = ?',
-    [ req.body.searchword ],
-    (error, results) => {
-      res.render('search');
+router.post('/search', (req, res) => {
+  var query = {
+    text: 'SELECT * FROM cookhack.Recipe WHERE name = $1',
+    values: [ req.body.searchword ],
+  };
+
+  pool.connect((err, client) => {
+    if(err){
+      console.log(err);
+      res.redirect('/');
+      return;
+    }else{
+      client.query(query, function(err, result){
+        res.render('search', { recipes: result.rows, search: query });
+      });
     }
-  );*/
-  res.render('search');
+  });
 });
 
 /* init_data */

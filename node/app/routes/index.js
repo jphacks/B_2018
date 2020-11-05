@@ -52,11 +52,11 @@ router.get('/init', function(req, res){
 });*/
 
 router.post('/search', (req, res) => {
-  var query = { 
+  var query = {
     text: 'SELECT * FROM cookhack.Recipe WHERE name = ?',
     values: [ req.body.searchword ],
   };
-  
+
   pool.connect((err, client) => {
     if(err){
       console.log(err);

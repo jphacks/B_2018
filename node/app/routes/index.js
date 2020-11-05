@@ -34,16 +34,20 @@ router.get('/menu/:id', function(req, res){
   res.render('menu');
 });
 
+router.get('/init', function(req, res){
+  res.render('init');
+});
+
 
 /* POST */
 
 
 /* init_data */
-router.post('/init', function(req, res){
+router.post('/init_table', function(req, res){
   fs.readFile('/app/sql/00_init_database.sql','utf-8', (err,data)=>{
     if(err) {
       console.log(err);
-      res.redirect('/');
+      res.redirect('/init');
       return;
     }
     var query ={
@@ -56,7 +60,7 @@ router.post('/init', function(req, res){
         client.query(query)
         .then(()=>{
           console.log('fin');
-          res.redirect('/');
+          res.redirect('/init');
         });
       }
     });
@@ -67,7 +71,7 @@ router.post('/init_data', function(req,res){
   fs.readFile('/app/sql/01_insert_sample_data.sql', 'utf-8', (err,data)=>{
     if(err) {
       console.log(err);
-      res.redirect('/');
+      res.redirect('/init');
       return;
     }
     var query ={
@@ -80,7 +84,7 @@ router.post('/init_data', function(req,res){
         client.query(query)
         .then(()=>{
           console.log('fin');
-          res.redirect('/');
+          res.redirect('/init');
         });
       }
     });

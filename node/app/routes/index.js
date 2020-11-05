@@ -17,8 +17,20 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/home', function(req, res, next){
-  res.render('home');
+router.get('/home', (req, res)=>{
+  var query = {
+    text: 'SELECT recipe.id, recipe.name FROM cookhack.recipe',
+  };
+  pool.connect((err, client) => {
+    if(err){
+      console.log(err);
+      res.redirect('/');
+    }else{
+      client.query(query, (err, result) => {
+        res.render('home', {recipes: result.rows});
+      });
+    }
+  });
 });
 
 router.get('/status', function(req, res, next){
@@ -31,7 +43,22 @@ router.get('/search', function(req, res){
 
 router.get('/menu/:id', function(req, res){
   console.log(req.params.id);
-  res.render('menu');
+  var query = {
+    text: 'SELECT recipe.name, recipe.description, food.name, food.gram, food.carbohydrate, food.protein, food.lipid FROM cookhack.recipe RIGHT JOIN ( SELECT finr.recipe_id, fstuff.name, fstuff.carbohydrate, fstuff.protein, fstuff.lipid, finr.gram FROM cookhack.foodstuffincludedrecipe as finr LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $1',
+    values: [ req.params.id ],
+  };
+  pool.connect((err, client) => {
+    if(err){
+      console.log(err);
+      res.redirect('/');
+      return;
+    }else{
+      client.query(query, (err, result) => {
+        console.log(result);
+        res.render('menu', {data: result.rows});
+      });
+    }
+  });
 });
 
 router.get('/init', function(req, res){
@@ -42,7 +69,7 @@ router.get('/init', function(req, res){
 /* POST */
 router.post('/search', (req, res) => {
   var query = {
-    text: 'SELECT * FROM cookhack.Recipe WHERE name = $1',
+    text: 'SELECT * FROM cookhack.Recipe WHERE name %> $1',
     values: [ req.body.searchword ],
   };
 

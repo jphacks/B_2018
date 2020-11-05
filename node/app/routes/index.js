@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const pg = require('pg');
 const fs = require('fs');
+const passport = require('passport');
 const { database } = require('pg/lib/defaults');
 
 const pool = new pg.Pool({
@@ -14,7 +15,16 @@ const pool = new pg.Pool({
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Express', user : req.user });
+});
+
+router.get('/login', (req, res) => {
+  res.render('login', {user: req.user});
+});
+
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
 });
 
 router.get('/home', (req, res)=>{
@@ -67,6 +77,12 @@ router.get('/init', function(req, res){
 
 
 /* POST */
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login',
+  session: true
+}));
+
 router.post('/search', (req, res) => {
   var query = {
     text: 'SELECT * FROM cookhack.Recipe WHERE name %> $1',

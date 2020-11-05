@@ -1,8 +1,8 @@
 CREATE SCHEMA cookhack;
 CREATE TABLE cookhack.Recipe (
-    id      SERIAL     NOT NULL,
-    name    VARCHAR(80)   NOT NULL,
-    description    TEXT   ,
+    id          SERIAL        NOT NULL,
+    name        VARCHAR(80)   NOT NULL,
+    description TEXT   ,
     PRIMARY KEY (id)
 );
 
@@ -25,12 +25,50 @@ CREATE TABLE cookhack.FoodstuffIncludedRecipe (
     FOREIGN KEY (foodstuff_id) REFERENCES cookhack.Foodstuff(id)
 );
 
-/*
-CREATE TABLE User (
-    id          INT,    NOT NULL,
-    name        varchar(64),    NOT NULL,
-    email       varchar(80),    NOT NULL,
-    password    varchar(80),    NOT NULL,
+
+CREATE TABLE cookhack.User (
+    id                  SERIAL          NOT NULL,
+    name                varchar(64)     NOT NULL,
+--    email       varchar(80),    NOT NULL,
+--    password    varchar(80),    NOT NULL,
+    carbohydrate_id     INT             NOT NULL,
+    protein_id          INT             NOT NULL,
+    lipid_id            INT             NOT NULL,
     PRIMARY KEY (id)
 );
-*/
+
+CREATE TABLE cookhack.UsersCarbohydrate(
+    id              INT     NOT NULL,
+    sunday          FLOAT,
+    monday          FLOAT,
+    tuesday         FLOAT,
+    wednesday       FLOAT,
+    thursday        FLOAT,
+    friday          FLOAT,
+    saturday        FLOAT,
+    FOREIGN KEY (id) REFERENCES cookhack.User(id)
+);
+
+CREATE TABLE cookhack.UsersProtein(
+    id              INT     NOT NULL,
+    sunday          FLOAT,
+    monday          FLOAT,
+    tuesday         FLOAT,
+    wednesday       FLOAT,
+    thursday        FLOAT,
+    friday          FLOAT,
+    saturday        FLOAT,
+    FOREIGN KEY (id) REFERENCES cookhack.User(id)
+);
+
+CREATE TABLE cookhack.UsersLipid(
+    id              INT     NOT NULL,
+    sunday          FLOAT,
+    monday          FLOAT,
+    tuesday         FLOAT,
+    wednesday       FLOAT,
+    thursday        FLOAT,
+    friday          FLOAT,
+    saturday        FLOAT,
+    FOREIGN KEY (id) REFERENCES cookhack.User(id)
+);

@@ -1,12 +1,14 @@
 var express = require('express');
 var router = express.Router();
 const pg = require('pg');
+const fs = require('fs');
+const { database } = require('pg/lib/defaults');
 
 const pool = new pg.Pool({
   database: 'cookhack',
   user: 'root',
   password: 'password',
-  host: 'localhost',
+  host: 'db',
   port: 5432,
 });
 
@@ -34,6 +36,56 @@ router.get('/menu/:id', function(req, res){
 
 
 /* POST */
+
+
+/* init_data */
+router.post('/init', function(req, res){
+  fs.readFile('/app/sql/00_init_database.sql','utf-8', (err,data)=>{
+    if(err) {
+      console.log(err);
+      res.redirect('/');
+      return;
+    }
+    var query ={
+      text:data,
+    }
+    pool.connect((err, client)=>{
+      if(err){
+        console.log(err);
+      }else{
+        client.query(query)
+        .then(()=>{
+          console.log('fin');
+          res.redirect('/');
+        });
+      }
+    });
+  });
+});
+
+router.post('/init_data', function(req,res){
+  fs.readFile('/app/sql/01_insert_sample_data.sql', 'utf-8', (err,data)=>{
+    if(err) {
+      console.log(err);
+      res.redirect('/');
+      return;
+    }
+    var query ={
+      text:data,
+    }
+    pool.connect((err, client)=>{
+      if(err){
+        console.log(err);
+      }else{
+        client.query(query)
+        .then(()=>{
+          console.log('fin');
+          res.redirect('/');
+        });
+      }
+    });
+  });
+});
 
 
 module.exports = router;

@@ -1,0 +1,19 @@
+body {
+    background-color: #a86f4c;
+}
+
+#container {
+    display: grid;
+    /* グリッドレイアウト */
+    grid-template-rows: 200px 200px;
+    grid-template-columns: 200px;
+}
+
+.box {
+    font-weight: bold;
+    color:#FFF ;/*文字色*/
+    background: #8d6449;
+    border: solid 3px #FFF;/*線*/
+    border-radius: 10px;/*角の丸み*/
+    position: relative;
+}

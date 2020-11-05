@@ -1,4 +1,6 @@
 CREATE SCHEMA cookhack;
+CREATE EXTENSION pg_trgm SCHEMA cookhack;
+SET pg_trgm.word_similarity_threshold to 0.1;
 CREATE TABLE cookhack.Recipe (
     id          SERIAL        NOT NULL,
     name        VARCHAR(80)   NOT NULL,

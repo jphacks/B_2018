@@ -6,6 +6,140 @@
     <title>Status</title>
     <link rel="stylesheet" href="/stylesheets/status.css">
     <script src="/send_url.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            const chart = new CanvasJS.Chart("chartContainer", {
+                title: {
+                    text: "必要量と摂取量を比較"
+                },
+                data: [  //array of dataSeries     
+                    { //dataSeries - first quarter
+                        /*** Change type "column" to "bar", "area", "line" or "pie"***/
+                        type: "column",
+                        name: "First Quarter",
+                        dataPoints: [
+                            { label: "炭水化物", y: 58 },
+                            { label: "タンパク質", y: 69 },
+                            { label: "脂質", y: 80 },
+                        ]
+                    },
+                    { //dataSeries - second quarter
+
+                        type: "column",
+                        name: "Second Quarter",
+                        dataPoints: [
+                            { label: "炭水化物", y: 58 },
+                            { label: "タンパク質", y: 69 },
+                            { label: "脂質", y: 80 },
+                        ]
+                    }
+                ]
+            });
+            const chart_weeks = new CanvasJS.Chart("chart_week", {
+                title: {
+                    text: "曜日ごとの栄養素別摂取量比較"
+                },
+
+                data: [  //array of dataSeries     
+                    { //dataSeries - first quarter
+                        /*** Change type "column" to "bar", "area", "line" or "pie"***/
+                        type: "column",
+                        name: "月曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: 58 },
+                            { label: "タンパク質", y: 69 },
+                            { label: "脂質", y: 80 },
+
+                        ]
+                    },
+
+                    { //dataSeries - second quarter
+
+                        type: "column",
+                        name: "火曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: 58 },
+                            { label: "タンパク質", y: 69 },
+                            { label: "脂質", y: 80 },
+
+                        ]
+                    },
+                    { //dataSeries - Third quarter
+
+                        type: "column",
+                        name: "水曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: 58 },
+                            { label: "タンパク質", y: 69 },
+                            { label: "脂質", y: 80 },
+
+                        ]
+                    },
+                    { //dataSeries - Third quarter
+
+                        type: "column",
+                        name: "木曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: 58 },
+                            { label: "タンパク質", y: 69 },
+                            { label: "脂質", y: 80 },
+
+                        ]
+                    },
+                    { //dataSeries - Third quarter
+
+                        type: "column",
+                        name: "金曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: 58 },
+                            { label: "タンパク質", y: 69 },
+                            { label: "脂質", y: 80 },
+
+                        ]
+                    },
+
+                    { //dataSeries - Third quarter
+
+                        type: "column",
+                        name: "土曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: 58 },
+                            { label: "タンパク質", y: 69 },
+                            { label: "脂質", y: 80 },
+
+                        ]
+                    },
+                    { //dataSeries - Third quarter
+
+                        type: "column",
+                        name: "日曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: 58 },
+                            { label: "タンパク質", y: 69 },
+                            { label: "脂質", y: 80 },
+
+                        ]
+                    }
+
+                ],
+                /** Set axisY properties here*/
+                axisY: {
+                    prefix: "$",
+                    suffix: "K"
+                }
+            });
+            chart.render();
+        }        
+    </script>
+
 </head>
 
 <body>
@@ -14,7 +148,10 @@
         <%- include('header.ejs') %>
     </header>
 
-    
+    <div id="container">
+        <div id="chartContainer" class="center"></div>
+        <div id="chart_week" class="center"></div>
+    </div>
 
 </body>
 

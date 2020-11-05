@@ -3,7 +3,7 @@ body {
 */
 }
 
-header {
+#top {
     display: grid;
     grid-template-rows: 300px;
     grid-template-columns: 1fr;

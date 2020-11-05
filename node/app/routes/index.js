@@ -53,18 +53,17 @@ router.post('/search', (req, res) => {
     values: [ req.body.searchword ],
   };
   
-  pool.connect()//(err, client) => {
-  .then(() => pool.query(query))
-  .then(results => res.render('search', { recipes: results }))
-  /*  if(err){
+  pool.connect((err, client) => {
+    if(err){
       console.log(err);
+      res.redirect('/');
+      return;
     }else{
-      client.query(query)
-      .then(results =>
-        res.render('search', { recipes: results});
-      );
+      client.query(query, function(err, result){
+        res.render('search', { recipes: [result] });
+        console.log(result);
+      });
     }
-  }*/
   /*connection.query(
     'SELECT * FROM cookhack.Recipe WHERE name = ?',
     [ req.body.searchword ],
@@ -73,6 +72,7 @@ router.post('/search', (req, res) => {
     }
   );*/
   //res.render('search');
+  });
 });
 
 /* init_data */

@@ -4,6 +4,15 @@
         <title>Login</title>
     </head>
     <body>
+        <% if (messages.danger) { %>
+            <span style="color: #f32013"><%- messages.danger %></span>
+        <% } %>
+        <% if (messages.warning) { %>
+            <span style="color: #ffcc00"><%- messages.warning %></span>
+        <% } %>
+        <% if (messages.success) { %>
+            <span style="color: #4bb543"><%- messages.success %></span>
+        <% } %>
         <form action="/login" method="POST">
             Email:
             <input type="text" name="email">
@@ -11,5 +20,9 @@
             <input type="password" name="password">
             <input type="submit">
         </form>
+
+        <div>
+            <p>New to CookHack?? <a href="/join">Create an account.</a></p>
+        </div>
     </body>
 </html>

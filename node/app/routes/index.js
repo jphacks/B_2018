@@ -45,7 +45,7 @@ router.post('/join', async function (req, res) {
     await client.query('BEGIN')
     var pwd = await bcrypt.hash(req.body.password, 5);
     await JSON.stringify(
-      client.query('SELECT userid FROM cookhack.User WHERE "email"=$1', [req.body.username], function(err, result) {
+      client.query('SELECT userid FROM cookhack.User WHERE "email"=$1', [req.body.email], function(err, result) {
         if (result && result.rows[0]) {
           req.flash('warning', "This email address is already registered. <a href='/login'>Log in!</a>")
           res.redirect('/join');

@@ -147,13 +147,10 @@ router.get('/menu/:id', function(req, res){
       return;
     }else{
       client.query(query, (err, result) => {
-        res.render('menu', {data: result.rows});
-        console.log(result);
-        var recipe_name = new Set();
-        result.rows.forEach(column => {
-          recipe_name.add(column["recipe_name"]);
-        });
-        res.render('menu', {data: result.rows, recipe_name: recipe_name});
+        var description = result.rows[0].description;
+        console.log(typeof description);
+        description = description.replace(/\\n/g, '\n');
+        res.render('menu', { recipe_data: result.rows, menu: result.rows[0].recipe_name, description: description });
       });
     }
   });

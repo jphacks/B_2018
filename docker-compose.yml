@@ -12,6 +12,7 @@ services:
     environment:
       CHOKIDAR_USEPOLLING: 1
     tty: true
+    command: npm start
   db:
     env_file: ./.env
     image: postgres:12.3-alpine

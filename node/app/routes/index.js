@@ -149,7 +149,7 @@ router.get('/status', function(req, res, next){
 });
 
 router.get('/search', function(req, res){
-  res.render('search');
+  res.render('search', { recipes: undefined, search: undefined });
 });
 
 router.get('/menu/:id', function(req, res){

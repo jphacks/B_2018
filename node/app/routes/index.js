@@ -56,6 +56,7 @@ router.post('/join', async function (req, res) {
             function (err, result) {
               if (err) {
                 console.log(err);
+                client.query('ROLLBACK');
               } else {
                 client.query('COMMIT');
                 console.log(result)
@@ -111,6 +112,7 @@ router.get('/logout', (req, res) => {
 router.get('/home', ensureAuthentication, (req, res)=>{
   var query = {
     text: 'SELECT recipe.id, recipe.name FROM cookhack.recipe',
+    
   };
   pool.connect((err, client) => {
     if(err){
@@ -120,6 +122,7 @@ router.get('/home', ensureAuthentication, (req, res)=>{
       client.query(query, (err, result) => {
         console.log("here");
         console.log(req.user)
+        console.log(result.rows)
         res.render('home', {recipes: result.rows, user: req.user});
       });
     }

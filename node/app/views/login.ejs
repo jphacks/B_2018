@@ -1,15 +1,32 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Login</title>
-    </head>
-    <body>
-        <form action="/login" method="POST">
-            Email:
-            <input type="text" name="email">
-            Password:
-            <input type="password" name="password">
-            <input type="submit">
+
+<head>
+    <title>Login</title>
+    <link rel='stylesheet' href='/stylesheets/login.css' />
+</head>
+
+<body>
+    <% if (messages.danger) { %>
+    <span style="color: #f32013"><%- messages.danger %></span>
+    <% } %>
+    <% if (messages.warning) { %>
+    <span style="color: #ffcc00"><%- messages.warning %></span>
+    <% } %>
+    <% if (messages.success) { %>
+    <span style="color: #4bb543"><%- messages.success %></span>
+    <% } %>
+    <div class="login">
+        <h1>Login to CookHack</h1>
+        <form method="POST" action="/login">
+            <p><input type="email" name="email" value="" placeholder="Email"></p>
+            <p><input type="password" name="password" value="" placeholder="Password"></p>
+            <p>New to CookHack??</p>
+            <p><a href="/join">Create an account.</a></p>
+            <p class="submit"><input type="submit" name="commit" value="Login"></p>
         </form>
-    </body>
+    </div>
+
+</body>
+
 </html>

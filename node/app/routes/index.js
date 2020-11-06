@@ -63,23 +63,17 @@ router.post('/join', async function (req, res) {
                 res.redirect('/login');
               }
             }
-          )
-          client.query("INSERT INTO cookhack.UsersCarbohydrate \
-            (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)\
-            VALUES \
-            ((SELECT userid from cookhack.User where name = $1),       0,      0,       0,         0,        0,      0,        0)",
+          );
+          client.query("INSERT INTO cookhack.UsersCarbohydrate (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday) VALUES \
+                  ( (SELECT userid from cookhack.User where name = $1),      0,      0,       0,         0,        0,      0,        0)",
             [req.body.username]
           );
-          client.query("INSERT INTO cookhack.UsersProtein  \
-            (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)\
-            VALUES \
-            ((SELECT userid from cookhack.User where name = $1),       0,      0,       0,         0,        0,      0,        0)",
+          client.query("INSERT INTO cookhack.UsersProtein      (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday) VALUES \
+                  ( (SELECT userid from cookhack.User where name = $1),      0,      0,       0,         0,        0,      0,        0)",
             [req.body.username]
           );
-          client.query("INSERT INTO cookhack.UsersLipid \
-            (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)\
-            VALUES \
-            ((SELECT userid from cookhack.User where name = $1),       0,      0,       0,         0,        0,      0,        0)",
+          client.query("INSERT INTO cookhack.UsersLipid        (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday) VALUES \
+                  ( (SELECT userid from cookhack.User where name = $1),      0,      0,       0,         0,        0,      0,        0)",
             [req.body.username]
           );
           return;
@@ -214,7 +208,6 @@ router.post('/search', (req, res) => {
 router.post('/menu/:id', ensureAuthentication, (req, res) => {
   var date = new Date();
   var dayOfWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"][date.getDay()];
-  console.log(dayOfWeek);
   var query = {
     text: "UPDATE cookhack.userscarbohydrate SET "+ dayOfWeek +" = "+ dayOfWeek +"+( \
             SELECT sum(food.gram*food.carbohydrate/100) FROM cookhack.recipe \
@@ -226,12 +219,12 @@ router.post('/menu/:id', ensureAuthentication, (req, res) => {
           ) WHERE userid = (\
             SELECT userid from cookhack.User where name = $2\
           )",
-    values: [ req.param.id, req.user.name ],
+    values: [ req.params.id, req.user.name ],
   };
   pool.connect((err, client) => {
     if(err){
       console.log(err);
-      res.redirect('/menu/'+req.param.id);
+      res.redirect('/menu/'+req.params.id);
     }else{
       client.query(query,(err, result)=>{
         if(err)console.log(err);
@@ -243,11 +236,11 @@ router.post('/menu/:id', ensureAuthentication, (req, res) => {
             SELECT finr.recipe_id, fstuff.protein, finr.gram \
             FROM cookhack.foodstuffincludedrecipe as finr \
             LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
-          ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $2 \
+          ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $1 \
         ) WHERE userid = (\
-          SELECT userid from cookhack.User where name = $3\
+          SELECT userid from cookhack.User where name = $2\
         )",
-        [ req.param.id, req.user.name ],
+        [ req.params.id, req.user.name ],
         (err, result) => {
           if(err)console.log(err);
         }
@@ -259,11 +252,11 @@ router.post('/menu/:id', ensureAuthentication, (req, res) => {
             SELECT finr.recipe_id, fstuff.lipid, finr.gram \
             FROM cookhack.foodstuffincludedrecipe as finr \
             LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
-          ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $2 \
+          ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $1 \
         ) WHERE userid = (\
-          SELECT userid from cookhack.User where name = $3\
+          SELECT userid from cookhack.User where name = $2\
         )",
-        [ req.param.id, req.user.name ],
+        [ req.params.id, req.user.name ],
         (err, result) => {
           if(err)console.log(err);
         }

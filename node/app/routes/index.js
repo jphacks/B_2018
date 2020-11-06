@@ -55,7 +55,7 @@ router.get('/search', function(req, res){
 router.get('/menu/:id', function(req, res){
   console.log(req.params.id);
   var query = {
-    text: 'SELECT recipe.name, recipe.description, food.name, food.gram, food.carbohydrate, food.protein, food.lipid FROM cookhack.recipe RIGHT JOIN ( SELECT finr.recipe_id, fstuff.name, fstuff.carbohydrate, fstuff.protein, fstuff.lipid, finr.gram FROM cookhack.foodstuffincludedrecipe as finr LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $1',
+    text: 'SELECT recipe.name as recipe_name, recipe.description, food.name as food_name, food.gram, food.carbohydrate, food.protein, food.lipid FROM cookhack.recipe RIGHT JOIN ( SELECT finr.recipe_id, fstuff.name, fstuff.carbohydrate, fstuff.protein, fstuff.lipid, finr.gram FROM cookhack.foodstuffincludedrecipe as finr LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $1',
     values: [ req.params.id ],
   };
   pool.connect((err, client) => {
@@ -66,6 +66,12 @@ router.get('/menu/:id', function(req, res){
     }else{
       client.query(query, (err, result) => {
         res.render('menu', {data: result.rows});
+        console.log(result);
+        var recipe_name = new Set();
+        result.rows.forEach(column => {
+          recipe_name.add(column["recipe_name"]);
+        });
+        res.render('menu', {data: result.rows, recipe_name: recipe_name});
       });
     }
   });

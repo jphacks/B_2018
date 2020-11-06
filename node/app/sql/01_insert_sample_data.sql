@@ -53,7 +53,7 @@ INSERT INTO cookhack.FoodstuffIncludedRecipe(recipe_id, foodstuff_id, gram) VALU
 );
 
 INSERT INTO cookhack.User (name, email, password) VALUES (
-    'test',
+    'Tanya',
     'testtest@test.com',
     'password'
 );

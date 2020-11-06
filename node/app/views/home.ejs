@@ -5,14 +5,8 @@
     <title>Home</title>
     <link rel='stylesheet' href='/stylesheets/reset.css' />
     <link rel='stylesheet' href='/stylesheets/home.css' />
-    <script src="/send_url.js"></script>
-    <link href="https://fonts.googleapis.com/earlyaccess/hannari.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/earlyaccess/nikukyu.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/earlyaccess/kokoro.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
+    <script src="/send_url.js"></script>
 </head>
 
 <body>
@@ -22,19 +16,13 @@
     </header>
 
     <div id="top">
-        <h1>
-            CookHack
-        </h1>
+        <div class="title">
+            <h1>
+                CookHack
+            </h1>
+        </div>
     </div>
-    <!--
-    <div id="container_title">
-        <div class="box_recommend">
-            <div id="title">
-                あなたにおすすめ！
-            </div>
-    </div>
-     -->
-    <div id="titlebox">
+    <div class="recommend">
         <h2>
             あなたにおすすめ！
         </h2>
@@ -42,33 +30,27 @@
 
     </div>
     <div id="container_menu">
+          <% recipes.forEach(recipe => { %>
         <div class="box">
-            レシピ名だよ！
-            <ul>
-                <li>
-                    炭水化物:
-                </li>
-                <li>
-                    脂質:
-                </li>
-                <li>
-                    タンパク質:
-                </li>
-            </ul>
+
+              <%= recipes.food_name %>
             <a href="https://www.google.co.jp"></a>
         </div>
         <div class="box">
             b
+              <%= recipes.food_name %>
             <a href="https://www.google.co.jp"></a>
         </div>
         <div class="box">
             c
+              <%= recipes.food_name %>
             <a href="https://www.google.co.jp"></a>
         </div>
         <div class="box">
             Look More Information
             <a href="https://www.google.co.jp"></a>
         </div>
+          <% }) %>
     </div>
     <footer>
       <%- include('footer.ejs') %>

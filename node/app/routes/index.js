@@ -193,9 +193,9 @@ router.get('/menu/:id', function(req, res){
       return;
     }else{
       client.query(query, (err, result) => {
-        var description = result.rows[0].description;
+        var description = result.rows[0].description.split('\\n');
         console.log(typeof description);
-        description = description.replace(/\\n/g, '\n');
+        //description = description.replace(/\\n/g, '\n');
         res.render('menu', { request_id: req.params.id, recipe_data: result.rows, menu: result.rows[0].recipe_name, description: description });
       });
     }

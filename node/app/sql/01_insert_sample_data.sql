@@ -53,22 +53,36 @@ INSERT INTO cookhack.FoodstuffIncludedRecipe(recipe_id, foodstuff_id, gram) VALU
 );
 
 INSERT INTO cookhack.User (name, email, password) VALUES (
-    'Aquors',
+    'test',
     'testtest@test.com',
     'password'
+), (
+    'Tanya',
+    'X@test.com',
+    'Existence_X'
+), (
+    'Sonya',
+    'killme@baby.com',
+    'killmebaby'
 );
 
 INSERT INTO cookhack.UsersCarbohydrate 
 (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)
 VALUES 
-((SELECT userid from cookhack.User where name = 'test'),      0,      0,       0,         0,        0,      0,        0);
+((SELECT userid from cookhack.User where name = 'test'),       0,      0,       0,         0,        0,      0,        0),
+((SELECT userid from cookhack.User where name = 'Tanya'),      0,      0,       0,         0,        0,      0,        0),
+((SELECT userid from cookhack.User where name = 'Sonya'),      0,      0,       0,         0,        0,      0,        0);
 
 INSERT INTO cookhack.UsersProtein 
 (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)
 VALUES 
-( (SELECT userid from cookhack.User where name = 'test'),      0,      0,       0,         0,        0,      0,        0);
+((SELECT userid from cookhack.User where name = 'test'),       0,      0,       0,         0,        0,      0,        0),
+((SELECT userid from cookhack.User where name = 'Tanya'),      0,      0,       0,         0,        0,      0,        0),
+((SELECT userid from cookhack.User where name = 'Sonya'),      0,      0,       0,         0,        0,      0,        0);
 
 INSERT INTO cookhack.UsersLipid 
 (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)
 VALUES 
-( (SELECT userid from cookhack.User where name = 'test'),      0,      0,       0,         0,        0,      0,        0);
+((SELECT userid from cookhack.User where name = 'test'),       0,      0,       0,         0,        0,      0,        0),
+((SELECT userid from cookhack.User where name = 'Tanya'),      0,      0,       0,         0,        0,      0,        0),
+((SELECT userid from cookhack.User where name = 'Sonya'),      0,      0,       0,         0,        0,      0,        0);

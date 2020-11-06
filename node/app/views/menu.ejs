@@ -3,8 +3,6 @@
   <head>
     <meta charset="utf-8">
     <title>menu</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="/send_url.js"></script>
   </head>
   <body>
     <header>
@@ -15,6 +13,11 @@
       <div class="titlearea">
         <h3>メニュー:
         <%= menu %></h3>
+      </div>
+      <div>
+        <form action="/menu/<%= request_id %>" method="POST">
+            <input type="submit" value="これを作る">
+        </form>
       </div>
       <div class="index-table-wrapper">
         <table style="padding: 20px;">

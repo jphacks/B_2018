@@ -64,12 +64,18 @@ router.get('/menu/:id', function(req, res){
       return;
     }else{
       client.query(query, (err, result) => {
-        console.log(result);
-        var recipe_name = new Set();
-        result.rows.forEach(column => {
-          recipe_name.add(column["recipe_name"]);
+        console.log(result.rows);
+        var food_name_set = new Set();
+        var obj_set = new Set();
+        result.rows.forEach(obj => {
+          if (!(food_name_set.has(obj.food_name))){
+            food_name_set.add(obj.food_name);
+            obj_set.add(obj);
+          }
         });
-        res.render('menu', {data: result.rows, recipe_name: recipe_name});
+        //console.log(result.recipe_name);
+        //result.rows.forEach(r =>{});
+        res.render('menu', { data: result.rows, recipes: obj_set, menu: result.rows[0].recipe_name });
       });
     }
   });

@@ -1,9 +1,58 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Menu</title>
-    </head>
-    <body>
-        <h1>This is menu page.</h1>
-    </body>
+  <head>
+    <meta charset="utf-8">
+    <title>menu</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/send_url.js"></script>
+  </head>
+  <body>
+    <header>
+      <!-- partial -->
+      <%- include('header.ejs') %>
+    </header>
+    <main>
+      <div class="titlearea">
+        <h3>メニュー:
+        <%= menu %></h3>
+      </div>
+      <div class="index-table-wrapper">
+        <table style="padding: 20px;">
+          <tr>
+            <td>素材</td>
+            <td>量</td>
+            <td>炭水化物</td>
+            <td>タンパク質</td>
+            <td>脂質</td>
+          </tr>
+          <% recipes.forEach(recipe => { %>
+          <tr>
+            <td style="width: 100px">
+              <%= recipe.food_name %>
+            </td>
+            <td style="width: 100px">
+              <%= recipe.gram %>g
+            </td>
+            <td style="width: 100px">
+              <%= recipe.carbohydrate %>g
+            </td>
+            <td style="width: 100px">
+              <%= recipe.protein %>g
+            </td>
+            <td style="width: 100px">
+              <%= recipe.lipid %>g
+            </td>
+          </tr>
+          <% }) %>
+        </table>
+      </div>
+      <div>
+        <h3>作り方</h3>
+        
+      </div>
+    </main>
+    <footer>
+      <%- include('footer.ejs') %>
+    </footer>
+  </body>
 </html>

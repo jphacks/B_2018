@@ -46,24 +46,22 @@ INSERT INTO cookhack.FoodstuffIncludedRecipe(recipe_id, foodstuff_id, gram) VALU
     250
 );
 
-INSERT INTO cookhack.User (name, carbohydrate_id, protein_id, lipid_id) VALUES (
+INSERT INTO cookhack.User (userid, name) VALUES (
     'Tanya',
-    1,
-    1,
-    1
+    'Tanya'
 );
 
 INSERT INTO cookhack.UsersCarbohydrate 
-(id, sunday, monday, tuesday, wednesday, thursday, friday, saturday)
+(userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)
 VALUES 
-( 1,      0,      0,       0,         0,        0,      0,        0);
+( 'Tanya',      0,      0,       0,         0,        0,      0,        0);
 
 INSERT INTO cookhack.UsersProtein 
-(id, sunday, monday, tuesday, wednesday, thursday, friday, saturday)
+(userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)
 VALUES 
-( 1,      0,      0,       0,         0,        0,      0,        0);
+( 'Tanya',      0,      0,       0,         0,        0,      0,        0);
 
 INSERT INTO cookhack.UsersLipid 
-(id, sunday, monday, tuesday, wednesday, thursday, friday, saturday)
+(userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)
 VALUES 
-( 1,      0,      0,       0,         0,        0,      0,        0);
+( 'Tanya',      0,      0,       0,         0,        0,      0,        0);

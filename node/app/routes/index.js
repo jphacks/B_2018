@@ -37,6 +37,7 @@ router.get('/home', (req, res)=>{
       res.redirect('/');
     }else{
       client.query(query, (err, result) => {
+        console.log("here");
         res.render('home', {recipes: result.rows});
       });
     }
@@ -64,7 +65,6 @@ router.get('/menu/:id', function(req, res){
       return;
     }else{
       client.query(query, (err, result) => {
-        console.log(result);
         res.render('menu', {data: result.rows});
       });
     }

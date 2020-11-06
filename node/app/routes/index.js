@@ -211,35 +211,22 @@ router.post('/search', (req, res) => {
   });
 });
 
-router.post('/menu/:id', (req, res) => {
+router.post('/menu/:id', ensureAuthentication, (req, res) => {
   var date = new Date();
   var dayOfWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"][date.getDay()];
+  console.log(dayOfWeek);
   var query = {
-    text: "UPDATE cookhack.userscarbohydrate SET $1 = ($1)+( \
+    text: "UPDATE cookhack.userscarbohydrate SET "+ dayOfWeek +" = "+ dayOfWeek +"+( \
             SELECT sum(food.gram*food.carbohydrate/100) FROM cookhack.recipe \
             RIGHT JOIN( \
               SELECT finr.recipe_id, fstuff.carbohydrate, finr.gram \
               FROM cookhack.foodstuffincludedrecipe as finr \
               LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
-            ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $2 \
-          ) WHERE userid = 'Tanya'; \
-          UPDATE cookhack.usersprotein SET $1 = ($1)+( \
-            SELECT sum(food.gram*food.protein/100) FROM cookhack.recipe \
-            RIGHT JOIN( \
-              SELECT finr.recipe_id, fstuff.protein, finr.gram \
-              FROM cookhack.foodstuffincludedrecipe as finr \
-              LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
-            ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $2 \
-          ) WHERE userid = 'Tanya'; \
-          UPDATE cookhack.userslipid SET $1 = ($1)+( \
-            SELECT sum(food.gram*food.lipid/100) FROM cookhack.recipe \
-            RIGHT JOIN( \
-              SELECT finr.recipe_id, fstuff.lipid, finr.gram \
-              FROM cookhack.foodstuffincludedrecipe as finr \
-              LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
-            ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $2 \
-          ) WHERE userid = 'Tanya'; ",
-    values: [ dayOfWeek, req.param.id,/*, req.user */],
+            ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $1 \
+          ) WHERE userid = (\
+            SELECT userid from cookhack.User where name = $2\
+          )",
+    values: [ req.param.id, req.user.name ],
   };
   pool.connect((err, client) => {
     if(err){
@@ -248,8 +235,40 @@ router.post('/menu/:id', (req, res) => {
     }else{
       client.query(query,(err, result)=>{
         if(err)console.log(err);
-        res.redirect('/status');
       });
+      client.query(
+        "UPDATE cookhack.usersprotein SET "+ dayOfWeek +" = "+ dayOfWeek +"+( \
+          SELECT sum(food.gram*food.protein/100) FROM cookhack.recipe \
+          RIGHT JOIN( \
+            SELECT finr.recipe_id, fstuff.protein, finr.gram \
+            FROM cookhack.foodstuffincludedrecipe as finr \
+            LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
+          ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $2 \
+        ) WHERE userid = (\
+          SELECT userid from cookhack.User where name = $3\
+        )",
+        [ req.param.id, req.user.name ],
+        (err, result) => {
+          if(err)console.log(err);
+        }
+      );
+      client.query(
+        "UPDATE cookhack.userslipid SET "+ dayOfWeek +" = "+ dayOfWeek +"+( \
+          SELECT sum(food.gram*food.lipid/100) FROM cookhack.recipe \
+          RIGHT JOIN( \
+            SELECT finr.recipe_id, fstuff.lipid, finr.gram \
+            FROM cookhack.foodstuffincludedrecipe as finr \
+            LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
+          ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $2 \
+        ) WHERE userid = (\
+          SELECT userid from cookhack.User where name = $3\
+        )",
+        [ req.param.id, req.user.name ],
+        (err, result) => {
+          if(err)console.log(err);
+        }
+      );
+      res.redirect('/status');
     }
   });
 });

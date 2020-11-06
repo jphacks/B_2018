@@ -141,8 +141,33 @@ router.get('/home', ensureAuthentication, (req, res)=>{
   });
 });
 
-router.get('/status', function(req, res, next){
-  res.render('status');
+router.get('/status', ensureAuthentication, function(req, res, next){
+  var query = {
+    text: "SELECT u.name, \
+                  (carb.sunday+carb.monday+carb.tuesday+carb.wednesday+carb.thursday+carb.friday+carb.saturday) as carb_sum,\
+                  carb.sunday as carb_sun, carb.monday as carb_mon, carb.tuesday as carb_tue, carb.wednesday as carb_wed, carb.thursday as carb_thu, carb.friday as carb_fri, carb.saturday as carb_sat, \
+                  (prot.sunday+prot.monday+prot.tuesday+prot.wednesday+prot.thursday+prot.friday+prot.saturday) as prot_sum,\
+                  prot.sunday as prot_sun, prot.monday as prot_mon, prot.tuesday as prot_tue, prot.wednesday as prot_wed, prot.thursday as prot_thu, prot.friday as prot_fri, prot.saturday as prot_sat, \
+                  (lipid.sunday+lipid.monday+lipid.tuesday+lipid.wednesday+lipid.thursday+lipid.friday+lipid.saturday) as lipid_sum,\
+                  lipid.sunday as lipid_sun, lipid.monday as lipid_mon, lipid.tuesday as lipid_tue, lipid.wednesday as lipid_wed, lipid.thursday as lipid_thu, lipid.friday as lipid_fri, lipid.saturday as lipid_sat \
+          FROM cookhack.user as u\
+          LEFT JOIN cookhack.userscarbohydrate as carb ON u.userid = carb.userid\
+          LEFT JOIN cookhack.usersprotein as prot ON u.userid = prot.userid\
+          LEFT JOIN cookhack.userslipid as lipid ON u.userid = lipid.userid\
+          WHERE u.email = $1 ",
+    values: [ req.user.email ]
+  };
+  pool.connect((err, client) => {
+    if(err){
+      console.log(err);
+      res.redirect('/');
+      return;
+    }
+    client.query(query, (err, result) => {
+      if(err)console.log(err);
+      res.render('status',{user_data: result.rows[0]});
+    });
+  });
 });
 
 router.get('/search', function(req, res){

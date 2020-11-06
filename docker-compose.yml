@@ -9,6 +9,8 @@ services:
       - ${SCRIPTS_SRC}:${WORKDIR}
     ports:
       - "${FRONT_PORT}:${CONTAINER_PORT}"
+    environment:
+      CHOKIDAR_USEPOLLING: 1
     tty: true
   db:
     env_file: ./.env

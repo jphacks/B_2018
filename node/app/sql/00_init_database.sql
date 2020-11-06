@@ -29,18 +29,18 @@ CREATE TABLE cookhack.FoodstuffIncludedRecipe (
 
 
 CREATE TABLE cookhack.User (
-    id                  SERIAL          NOT NULL,
+    userid              varchar(255)          NOT NULL,
     name                varchar(64)     NOT NULL,
 --    email       varchar(80),    NOT NULL,
 --    password    varchar(80),    NOT NULL,
-    carbohydrate_id     INT             NOT NULL,
-    protein_id          INT             NOT NULL,
-    lipid_id            INT             NOT NULL,
-    PRIMARY KEY (id)
+--    carbohydrate_id     INT             NOT NULL,
+--    protein_id          INT             NOT NULL,
+--    lipid_id            INT             NOT NULL,
+    PRIMARY KEY (userid)
 );
 
 CREATE TABLE cookhack.UsersCarbohydrate(
-    id              INT     NOT NULL,
+    userid          varchar(255)     NOT NULL,
     sunday          FLOAT,
     monday          FLOAT,
     tuesday         FLOAT,
@@ -48,11 +48,11 @@ CREATE TABLE cookhack.UsersCarbohydrate(
     thursday        FLOAT,
     friday          FLOAT,
     saturday        FLOAT,
-    FOREIGN KEY (id) REFERENCES cookhack.User(id)
+    FOREIGN KEY (userid) REFERENCES cookhack.User(userid)
 );
 
 CREATE TABLE cookhack.UsersProtein(
-    id              INT     NOT NULL,
+    userid          varchar(255)     NOT NULL,
     sunday          FLOAT,
     monday          FLOAT,
     tuesday         FLOAT,
@@ -60,11 +60,11 @@ CREATE TABLE cookhack.UsersProtein(
     thursday        FLOAT,
     friday          FLOAT,
     saturday        FLOAT,
-    FOREIGN KEY (id) REFERENCES cookhack.User(id)
+    FOREIGN KEY (userid) REFERENCES cookhack.User(userid)
 );
 
 CREATE TABLE cookhack.UsersLipid(
-    id              INT     NOT NULL,
+    userid          varchar(255)     NOT NULL,
     sunday          FLOAT,
     monday          FLOAT,
     tuesday         FLOAT,
@@ -72,5 +72,5 @@ CREATE TABLE cookhack.UsersLipid(
     thursday        FLOAT,
     friday          FLOAT,
     saturday        FLOAT,
-    FOREIGN KEY (id) REFERENCES cookhack.User(id)
+    FOREIGN KEY (userid) REFERENCES cookhack.User(userid)
 );

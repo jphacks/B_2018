@@ -1,0 +1,407 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.3
+-- Dumped by pg_dump version 12.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: cookhack; Type: SCHEMA; Schema: -; Owner: root
+--
+
+CREATE SCHEMA cookhack;
+
+
+ALTER SCHEMA cookhack OWNER TO root;
+
+--
+-- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA cookhack;
+
+
+--
+-- Name: EXTENSION pg_trgm; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: foodstuff; Type: TABLE; Schema: cookhack; Owner: root
+--
+
+CREATE TABLE cookhack.foodstuff (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL,
+    carbohydrate double precision,
+    protein double precision,
+    lipid double precision
+);
+
+
+ALTER TABLE cookhack.foodstuff OWNER TO root;
+
+--
+-- Name: foodstuff_id_seq; Type: SEQUENCE; Schema: cookhack; Owner: root
+--
+
+CREATE SEQUENCE cookhack.foodstuff_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE cookhack.foodstuff_id_seq OWNER TO root;
+
+--
+-- Name: foodstuff_id_seq; Type: SEQUENCE OWNED BY; Schema: cookhack; Owner: root
+--
+
+ALTER SEQUENCE cookhack.foodstuff_id_seq OWNED BY cookhack.foodstuff.id;
+
+
+--
+-- Name: foodstuffincludedrecipe; Type: TABLE; Schema: cookhack; Owner: root
+--
+
+CREATE TABLE cookhack.foodstuffincludedrecipe (
+    id integer NOT NULL,
+    recipe_id integer NOT NULL,
+    foodstuff_id integer NOT NULL,
+    gram double precision
+);
+
+
+ALTER TABLE cookhack.foodstuffincludedrecipe OWNER TO root;
+
+--
+-- Name: foodstuffincludedrecipe_id_seq; Type: SEQUENCE; Schema: cookhack; Owner: root
+--
+
+CREATE SEQUENCE cookhack.foodstuffincludedrecipe_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE cookhack.foodstuffincludedrecipe_id_seq OWNER TO root;
+
+--
+-- Name: foodstuffincludedrecipe_id_seq; Type: SEQUENCE OWNED BY; Schema: cookhack; Owner: root
+--
+
+ALTER SEQUENCE cookhack.foodstuffincludedrecipe_id_seq OWNED BY cookhack.foodstuffincludedrecipe.id;
+
+
+--
+-- Name: recipe; Type: TABLE; Schema: cookhack; Owner: root
+--
+
+CREATE TABLE cookhack.recipe (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL,
+    description text
+);
+
+
+ALTER TABLE cookhack.recipe OWNER TO root;
+
+--
+-- Name: recipe_id_seq; Type: SEQUENCE; Schema: cookhack; Owner: root
+--
+
+CREATE SEQUENCE cookhack.recipe_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE cookhack.recipe_id_seq OWNER TO root;
+
+--
+-- Name: recipe_id_seq; Type: SEQUENCE OWNED BY; Schema: cookhack; Owner: root
+--
+
+ALTER SEQUENCE cookhack.recipe_id_seq OWNED BY cookhack.recipe.id;
+
+
+--
+-- Name: user; Type: TABLE; Schema: cookhack; Owner: root
+--
+
+CREATE TABLE cookhack."user" (
+    userid character varying(255) NOT NULL,
+    name character varying(64) NOT NULL
+);
+
+
+ALTER TABLE cookhack."user" OWNER TO root;
+
+--
+-- Name: userscarbohydrate; Type: TABLE; Schema: cookhack; Owner: root
+--
+
+CREATE TABLE cookhack.userscarbohydrate (
+    userid character varying(255) NOT NULL,
+    sunday double precision,
+    monday double precision,
+    tuesday double precision,
+    wednesday double precision,
+    thursday double precision,
+    friday double precision,
+    saturday double precision
+);
+
+
+ALTER TABLE cookhack.userscarbohydrate OWNER TO root;
+
+--
+-- Name: userslipid; Type: TABLE; Schema: cookhack; Owner: root
+--
+
+CREATE TABLE cookhack.userslipid (
+    userid character varying(255) NOT NULL,
+    sunday double precision,
+    monday double precision,
+    tuesday double precision,
+    wednesday double precision,
+    thursday double precision,
+    friday double precision,
+    saturday double precision
+);
+
+
+ALTER TABLE cookhack.userslipid OWNER TO root;
+
+--
+-- Name: usersprotein; Type: TABLE; Schema: cookhack; Owner: root
+--
+
+CREATE TABLE cookhack.usersprotein (
+    userid character varying(255) NOT NULL,
+    sunday double precision,
+    monday double precision,
+    tuesday double precision,
+    wednesday double precision,
+    thursday double precision,
+    friday double precision,
+    saturday double precision
+);
+
+
+ALTER TABLE cookhack.usersprotein OWNER TO root;
+
+--
+-- Name: foodstuff id; Type: DEFAULT; Schema: cookhack; Owner: root
+--
+
+ALTER TABLE ONLY cookhack.foodstuff ALTER COLUMN id SET DEFAULT nextval('cookhack.foodstuff_id_seq'::regclass);
+
+
+--
+-- Name: foodstuffincludedrecipe id; Type: DEFAULT; Schema: cookhack; Owner: root
+--
+
+ALTER TABLE ONLY cookhack.foodstuffincludedrecipe ALTER COLUMN id SET DEFAULT nextval('cookhack.foodstuffincludedrecipe_id_seq'::regclass);
+
+
+--
+-- Name: recipe id; Type: DEFAULT; Schema: cookhack; Owner: root
+--
+
+ALTER TABLE ONLY cookhack.recipe ALTER COLUMN id SET DEFAULT nextval('cookhack.recipe_id_seq'::regclass);
+
+
+--
+-- Data for Name: foodstuff; Type: TABLE DATA; Schema: cookhack; Owner: root
+--
+
+COPY cookhack.foodstuff (id, name, carbohydrate, protein, lipid) FROM stdin;
+1	天草	53.8	16.1	1
+2	水	0	0	0
+3	酢	2.38	0.13	0
+4	トマト	4.7	0.7	0.1
+\.
+
+
+--
+-- Data for Name: foodstuffincludedrecipe; Type: TABLE DATA; Schema: cookhack; Owner: root
+--
+
+COPY cookhack.foodstuffincludedrecipe (id, recipe_id, foodstuff_id, gram) FROM stdin;
+1	1	1	15
+2	1	2	1000
+3	1	3	7.5
+4	2	4	250
+\.
+
+
+--
+-- Data for Name: recipe; Type: TABLE DATA; Schema: cookhack; Owner: root
+--
+
+COPY cookhack.recipe (id, name, description) FROM stdin;
+1	ところてん	天草を水洗いする 。\\nお鍋に水、天草、酢を加えて、火にかける 。\\nお湯が沸いてグツグツとしたら、お鍋がフツフツと静かににたぎるくらい状態に火力を調製する。泡のように浮いているアクをまめにすくいとる 。\\n煮込み始めて30分を過ぎた頃から、煮込み加減を細かく注意してみる 。しゃもじにところ天をすくってみて固まるようであれば、煮込みは完了です。\\n煮込んだところてん液をザルでこして、天草とところてん液とわける。\\nところ天液を流しいれる器を用意して、ところ天液をコシ器でこす。\\n容器にいれたところ天の泡がういているようであれば、すくいとる 。ところ天のあら熱をとる 。ところ天のあら熱がとれたら、冷蔵庫で冷やす。\\nところ天が冷えたら、ところてん突き棒で細長く切る。\\n完成です。
+2	トマトジュース	トマトをすり潰す。\\nざるで濾す。\\n完成。
+\.
+
+
+--
+-- Data for Name: user; Type: TABLE DATA; Schema: cookhack; Owner: root
+--
+
+COPY cookhack."user" (userid, name) FROM stdin;
+Tanya	Tanya
+\.
+
+
+--
+-- Data for Name: userscarbohydrate; Type: TABLE DATA; Schema: cookhack; Owner: root
+--
+
+COPY cookhack.userscarbohydrate (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday) FROM stdin;
+Tanya	0	0	0	0	0	0	0
+\.
+
+
+--
+-- Data for Name: userslipid; Type: TABLE DATA; Schema: cookhack; Owner: root
+--
+
+COPY cookhack.userslipid (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday) FROM stdin;
+Tanya	0	0	0	0	0	0	0
+\.
+
+
+--
+-- Data for Name: usersprotein; Type: TABLE DATA; Schema: cookhack; Owner: root
+--
+
+COPY cookhack.usersprotein (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday) FROM stdin;
+Tanya	0	0	0	0	0	0	0
+\.
+
+
+--
+-- Name: foodstuff_id_seq; Type: SEQUENCE SET; Schema: cookhack; Owner: root
+--
+
+SELECT pg_catalog.setval('cookhack.foodstuff_id_seq', 4, true);
+
+
+--
+-- Name: foodstuffincludedrecipe_id_seq; Type: SEQUENCE SET; Schema: cookhack; Owner: root
+--
+
+SELECT pg_catalog.setval('cookhack.foodstuffincludedrecipe_id_seq', 4, true);
+
+
+--
+-- Name: recipe_id_seq; Type: SEQUENCE SET; Schema: cookhack; Owner: root
+--
+
+SELECT pg_catalog.setval('cookhack.recipe_id_seq', 2, true);
+
+
+--
+-- Name: foodstuff foodstuff_pkey; Type: CONSTRAINT; Schema: cookhack; Owner: root
+--
+
+ALTER TABLE ONLY cookhack.foodstuff
+    ADD CONSTRAINT foodstuff_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: foodstuffincludedrecipe foodstuffincludedrecipe_pkey; Type: CONSTRAINT; Schema: cookhack; Owner: root
+--
+
+ALTER TABLE ONLY cookhack.foodstuffincludedrecipe
+    ADD CONSTRAINT foodstuffincludedrecipe_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: recipe recipe_pkey; Type: CONSTRAINT; Schema: cookhack; Owner: root
+--
+
+ALTER TABLE ONLY cookhack.recipe
+    ADD CONSTRAINT recipe_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: user user_pkey; Type: CONSTRAINT; Schema: cookhack; Owner: root
+--
+
+ALTER TABLE ONLY cookhack."user"
+    ADD CONSTRAINT user_pkey PRIMARY KEY (userid);
+
+
+--
+-- Name: foodstuffincludedrecipe foodstuffincludedrecipe_foodstuff_id_fkey; Type: FK CONSTRAINT; Schema: cookhack; Owner: root
+--
+
+ALTER TABLE ONLY cookhack.foodstuffincludedrecipe
+    ADD CONSTRAINT foodstuffincludedrecipe_foodstuff_id_fkey FOREIGN KEY (foodstuff_id) REFERENCES cookhack.foodstuff(id);
+
+
+--
+-- Name: foodstuffincludedrecipe foodstuffincludedrecipe_recipe_id_fkey; Type: FK CONSTRAINT; Schema: cookhack; Owner: root
+--
+
+ALTER TABLE ONLY cookhack.foodstuffincludedrecipe
+    ADD CONSTRAINT foodstuffincludedrecipe_recipe_id_fkey FOREIGN KEY (recipe_id) REFERENCES cookhack.recipe(id);
+
+
+--
+-- Name: userscarbohydrate userscarbohydrate_userid_fkey; Type: FK CONSTRAINT; Schema: cookhack; Owner: root
+--
+
+ALTER TABLE ONLY cookhack.userscarbohydrate
+    ADD CONSTRAINT userscarbohydrate_userid_fkey FOREIGN KEY (userid) REFERENCES cookhack."user"(userid);
+
+
+--
+-- Name: userslipid userslipid_userid_fkey; Type: FK CONSTRAINT; Schema: cookhack; Owner: root
+--
+
+ALTER TABLE ONLY cookhack.userslipid
+    ADD CONSTRAINT userslipid_userid_fkey FOREIGN KEY (userid) REFERENCES cookhack."user"(userid);
+
+
+--
+-- Name: usersprotein usersprotein_userid_fkey; Type: FK CONSTRAINT; Schema: cookhack; Owner: root
+--
+
+ALTER TABLE ONLY cookhack.usersprotein
+    ADD CONSTRAINT usersprotein_userid_fkey FOREIGN KEY (userid) REFERENCES cookhack."user"(userid);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

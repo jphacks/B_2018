@@ -217,9 +217,9 @@ router.post('/menu/:id', ensureAuthentication, (req, res) => {
               LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
             ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $1 \
           ) WHERE userid = (\
-            SELECT userid from cookhack.User where name = $2\
+            SELECT userid from cookhack.User where email = $2\
           )",
-    values: [ req.params.id, req.user.name ],
+    values: [ req.params.id, req.user.email ],
   };
   pool.connect((err, client) => {
     if(err){
@@ -238,9 +238,9 @@ router.post('/menu/:id', ensureAuthentication, (req, res) => {
             LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
           ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $1 \
         ) WHERE userid = (\
-          SELECT userid from cookhack.User where name = $2\
+          SELECT userid from cookhack.User where email = $2\
         )",
-        [ req.params.id, req.user.name ],
+        [ req.params.id, req.user.email ],
         (err, result) => {
           if(err)console.log(err);
         }
@@ -254,9 +254,9 @@ router.post('/menu/:id', ensureAuthentication, (req, res) => {
             LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
           ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $1 \
         ) WHERE userid = (\
-          SELECT userid from cookhack.User where name = $2\
+          SELECT userid from cookhack.User where email = $2\
         )",
-        [ req.params.id, req.user.name ],
+        [ req.params.id, req.user.email ],
         (err, result) => {
           if(err)console.log(err);
         }

@@ -7,10 +7,7 @@
     <script src="/send_url.js"></script>
   </head>
   <body>
-    <header>
-      <!-- partial -->
-      <%- include('header.ejs') %>
-    </header>
+    <%- include('header.ejs') %>
     <main>
       <% if (!(search == undefined)){ %>
       <div id="posttime">
@@ -49,8 +46,6 @@
       </div>
       <% } %>
     </main>
-    <footer>
-      <%- include('footer.ejs') %>
-    </footer>
+    <%- include('footer.ejs') %>
   </body>
 </html>

@@ -3,16 +3,14 @@
 
 <head>
     <title>Home</title>
+    <link rel='stylesheet' href='/stylesheets/reset.css' />
     <link rel='stylesheet' href='/stylesheets/home.css' />
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet">
     <script src="/send_url.js"></script>
 </head>
 
 <body>
-    <header>
-        <!-- partial -->
-        <%- include('header.ejs', {user: user}) %>
-    </header>
+    <%- include('header.ejs', {user: user}) %>
 
     <div id="top">
         <div class="title">
@@ -41,9 +39,7 @@
             </div>
         </div>
     </div>
-    <footer>
-      <%- include('footer.ejs') %>
-    </footer>
+    <%- include('footer.ejs') %>
 
 </body>
 

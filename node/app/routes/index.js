@@ -65,16 +65,16 @@ router.post('/join', async function (req, res) {
             }
           );
           client.query("INSERT INTO cookhack.UsersCarbohydrate (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday) VALUES \
-                  ( (SELECT userid from cookhack.User where name = $1),      0,      0,       0,         0,        0,      0,        0)",
-            [req.body.username]
+                  ( (SELECT userid from cookhack.User where email = $1),      0,      0,       0,         0,        0,      0,        0)",
+            [req.body.email]
           );
           client.query("INSERT INTO cookhack.UsersProtein      (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday) VALUES \
-                  ( (SELECT userid from cookhack.User where name = $1),      0,      0,       0,         0,        0,      0,        0)",
-            [req.body.username]
+                  ( (SELECT userid from cookhack.User where email = $1),      0,      0,       0,         0,        0,      0,        0)",
+            [req.body.email]
           );
           client.query("INSERT INTO cookhack.UsersLipid        (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday) VALUES \
-                  ( (SELECT userid from cookhack.User where name = $1),      0,      0,       0,         0,        0,      0,        0)",
-            [req.body.username]
+                  ( (SELECT userid from cookhack.User where email = $1),      0,      0,       0,         0,        0,      0,        0)",
+            [req.body.email]
           );
           return;
         }

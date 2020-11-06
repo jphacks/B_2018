@@ -3,4 +3,22 @@
   letter-spacing: .1em;
   color: #fff;
   text-shadow: -4px 3px 0 #a86f4c, -8px 6px 0 #000;
- } 
+}
+
+.header-area {
+  display: flex;
+  height: 50px;
+  line-height: 50px;
+}
+
+.header-item{
+  margin: 0 10px;
+}
+
+.header-item:nth-of-type(2){
+  margin-left: auto;
+}
+
+.menu-var{
+  color: white;
+}

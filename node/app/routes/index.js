@@ -51,7 +51,7 @@ router.post('/join', async function (req, res) {
           res.redirect('/join');
         } else {
           client.query(
-            'INSERT INTO cookhack.User (userid, name, email, password) VALUES ($1, $2, $3, $4)',
+            "INSERT INTO cookhack.User (userid, name, email, password) VALUES ($1, $2, $3, $4)",
             [uuidv4(), req.body.username, req.body.email, pwd],
             function (err, result) {
               if (err) {
@@ -61,10 +61,28 @@ router.post('/join', async function (req, res) {
                 console.log(result)
                 req.flash('success', 'User created')
                 res.redirect('/login');
-                return;
               }
             }
+          )
+          client.query("INSERT INTO cookhack.UsersCarbohydrate \
+            (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)\
+            VALUES \
+            ((SELECT userid from cookhack.User where name = $1),       0,      0,       0,         0,        0,      0,        0)",
+            [req.body.username]
           );
+          client.query("INSERT INTO cookhack.UsersProtein  \
+            (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)\
+            VALUES \
+            ((SELECT userid from cookhack.User where name = $1),       0,      0,       0,         0,        0,      0,        0)",
+            [req.body.username]
+          );
+          client.query("INSERT INTO cookhack.UsersLipid \
+            (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)\
+            VALUES \
+            ((SELECT userid from cookhack.User where name = $1),       0,      0,       0,         0,        0,      0,        0)",
+            [req.body.username]
+          );
+          return;
         }
       })
     )

@@ -6,37 +6,33 @@
     <link rel='stylesheet' href='/stylesheets/reset.css' />
     <link rel='stylesheet' href='/stylesheets/home.css' />
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet">
-    <script src="/send_url.js"></script>
 </head>
 
 <body>
     <%- include('header.ejs', {user: user}) %>
 
     <div id="top">
-        <div class="title">
-            <h1>
-                CookHack
+        <div class="text">
+            <h1 class="title">
+                <span>CookHack</span>
             </h1>
         </div>
     </div>
     <div class="top_field">
-        <div class="recommend">
-            <h2>
-                Recommend for you
-            </h2>
+        <h2>
+            Recommend for you
+        </h2>
+    </div>
+    <div id="container_menu">
+        <% recipes.forEach(recipe => { %>
+        <div class="box">
+            <span><%= recipe.name %></span>
+            <a href="/menu/<%= recipe.id %>"></a>
         </div>
-        </div>
-        <div id="container_menu">
-            <% recipes.forEach(recipe => { %>
-            <div class="box">
-                <span><%= recipe.name %></span>
-                <a href="/menu/<%= recipe.id %>"></a>
-            </div>
-            <% }) %>
-            <div class="box">
-                Look More Information
-                <a href="https://www.google.co.jp"></a>
-            </div>
+        <% }) %>
+        <div class="box">
+            Look More Information
+            <a href="https://www.google.co.jp"></a>
         </div>
     </div>
     <%- include('footer.ejs') %>

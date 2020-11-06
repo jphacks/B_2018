@@ -2,17 +2,23 @@
   font-style: italic;
   letter-spacing: .1em;
   color: #fff;
-  text-shadow: -4px 3px 0 #a86f4c, -8px 6px 0 #000;
+  text-decoration: none;
+  /*text-shadow: -4px 3px 0 #a86f4c, -8px 6px 0 #000;*/
 }
 
 .header-area {
   display: flex;
   height: 50px;
   line-height: 50px;
+  background-color: #5C4138;
 }
 
 .header-item{
   margin: 0 10px;
+}
+
+.header-item:nth-of-type(1){
+  margin-left: 20px;
 }
 
 .header-item:nth-of-type(2){

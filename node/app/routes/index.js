@@ -87,7 +87,7 @@ router.post('/login', passport.authenticate('local', {
 
 router.post('/search', (req, res) => {
   var query = {
-    text: 'SELECT * FROM cookhack.Recipe WHERE name %> $1',
+    text: 'SELECT * FROM cookhack.Recipe WHERE name = $1',
     values: [ req.body.searchword ],
   };
 

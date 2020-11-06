@@ -25,7 +25,7 @@
             <td>タンパク質</td>
             <td>脂質</td>
           </tr>
-          <% recipes.forEach(recipe => { %>
+          <% recipe_data.forEach(recipe => { %>
           <tr>
             <td style="width: 100px">
               <%= recipe.food_name %>
@@ -48,7 +48,7 @@
       </div>
       <div>
         <h3>作り方</h3>
-        
+        <%= description %>
       </div>
     </main>
     <footer>

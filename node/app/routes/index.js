@@ -1,5 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var flash = require('connect-flash');
+var request = require('request');
+const bcrypt = require('bcrypt')
+const uuidv4 = require('uuid/v4');
 const pg = require('pg');
 const fs = require('fs');
 const passport = require('passport');
@@ -13,32 +17,110 @@ const pool = new pg.Pool({
   port: 5432,
 });
 
+function ensureAuthentication(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  else res.redirect("/login");
+}
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express', user : req.user });
+  res.redirect('/home');
 });
 
+router.get('/join', function(req, res, next) {
+  res.render('join', {
+    title: "Join",
+    userData: req.user,
+    messages: {
+      danger: req.flash('danger'),
+      warning: req.flash('warning'),
+      success: req.flash('success')
+    }
+  })
+})
+
+router.post('/join', async function (req, res) {
+  try {
+    const client = await pool.connect()
+    await client.query('BEGIN')
+    var pwd = await bcrypt.hash(req.body.password, 5);
+    await JSON.stringify(
+      client.query('SELECT userid FROM cookhack.User WHERE "email"=$1', [req.body.username], function(err, result) {
+        if (result && result.rows[0]) {
+          req.flash('warning', "This email address is already registered. <a href='/login'>Log in!</a>")
+          res.redirect('/join');
+        } else {
+          client.query(
+            'INSERT INTO cookhack.User (userid, name, email, password) VALUES ($1, $2, $3, $4)',
+            [uuidv4(), req.body.username, req.body.email, pwd],
+            function (err, result) {
+              if (err) {
+                console.log(err);
+              } else {
+                client.query('COMMIT');
+                console.log(result)
+                req.flash('success', 'User created')
+                res.redirect('/login');
+                return;
+              }
+            }
+          );
+        }
+      })
+    )
+    client.release();
+  } catch (e) {
+    throw(e);
+  }
+})
+
 router.get('/login', (req, res) => {
-  res.render('login', {user: req.user});
+  if (req.isAuthenticated()) res.redirect('/home');
+  else {
+    res.render('login', {
+      title: "Log in",
+      userData: req.user,
+      messages: {
+        danger: req.flash('danger'),
+        warning: req.flash('warning'),
+        success: req.flash('success')
+      }
+    });
+  }
 });
+
+router.post('/login', passport.authenticate('local', {
+  successRedirect: '/home',
+  failureRedirect: '/login',
+  failureFlash: true
+}), function(res, req) {
+  if (req.body.remember) {
+    req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;
+  } else {
+    req.session.cookie.expires = false;
+  }
+  res.redirect('/home');
+})
 
 router.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('/');
+  req.flash('success', "Logged out. See you soon!");
+  res.redirect('/login');
 });
 
-router.get('/home', (req, res)=>{
+router.get('/home', ensureAuthentication, (req, res)=>{
   var query = {
     text: 'SELECT recipe.id, recipe.name FROM cookhack.recipe',
   };
   pool.connect((err, client) => {
     if(err){
       console.log(err);
-      res.redirect('/');
+      res.redirect('/login');
     }else{
       client.query(query, (err, result) => {
         console.log("here");
-        res.render('home', {recipes: result.rows});
+        console.log(req.user)
+        res.render('home', {recipes: result.rows, user: req.user});
       });
     }
   });

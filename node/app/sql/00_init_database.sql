@@ -1,5 +1,6 @@
 CREATE SCHEMA cookhack;
 CREATE EXTENSION pg_trgm SCHEMA cookhack;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 SET pg_trgm.word_similarity_threshold to 0.1;
 CREATE TABLE cookhack.Recipe (
     id          SERIAL        NOT NULL,
@@ -29,10 +30,10 @@ CREATE TABLE cookhack.FoodstuffIncludedRecipe (
 
 
 CREATE TABLE cookhack.User (
-    userid              varchar(255)          NOT NULL,
+    userid              UUID DEFAULT uuid_generate_v4 (),
     name                varchar(64)     NOT NULL,
---    email       varchar(80),    NOT NULL,
---    password    varchar(80),    NOT NULL,
+    email       varchar(80)    NOT NULL,
+    password    varchar(80)    NOT NULL,
 --    carbohydrate_id     INT             NOT NULL,
 --    protein_id          INT             NOT NULL,
 --    lipid_id            INT             NOT NULL,
@@ -40,7 +41,7 @@ CREATE TABLE cookhack.User (
 );
 
 CREATE TABLE cookhack.UsersCarbohydrate(
-    userid          varchar(255)     NOT NULL,
+    userid          UUID     NOT NULL,
     sunday          FLOAT,
     monday          FLOAT,
     tuesday         FLOAT,
@@ -52,7 +53,7 @@ CREATE TABLE cookhack.UsersCarbohydrate(
 );
 
 CREATE TABLE cookhack.UsersProtein(
-    userid          varchar(255)     NOT NULL,
+    userid          UUID     NOT NULL,
     sunday          FLOAT,
     monday          FLOAT,
     tuesday         FLOAT,
@@ -64,7 +65,7 @@ CREATE TABLE cookhack.UsersProtein(
 );
 
 CREATE TABLE cookhack.UsersLipid(
-    userid          varchar(255)     NOT NULL,
+    userid          UUID     NOT NULL,
     sunday          FLOAT,
     monday          FLOAT,
     tuesday         FLOAT,

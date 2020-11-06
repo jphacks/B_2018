@@ -19,28 +19,24 @@
             </h1>
         </div>
     </div>
-    <div class="top_field">
-        <div class="recommend">
-            <h2>
-                Recommend for you
-            </h2>
+    <div class="recommend">
+        <h2>
+            Recommend for you
+        </h2>
+    </div>
+    <div id="container_menu">
+        <% recipes.forEach(recipe => { %>
+        <div class="box">
+            <span><%= recipe.name %></span>
+            <a href="/menu/<%= recipe.id %>"></a>
         </div>
-        </div>
-        <div id="container_menu">
-            <% recipes.forEach(recipe => { %>
-            <div class="box">
-                <span><%= recipe.name %></span>
-                <a href="/menu/<%= recipe.id %>"></a>
-            </div>
-            <% }) %>
-            <div class="box">
-                Look More Information
-                <a href="https://www.google.co.jp"></a>
-            </div>
+        <% }) %>
+        <div class="box">
+            Look More Information
+            <a href="https://www.google.co.jp"></a>
         </div>
     </div>
     <%- include('footer.ejs') %>
-
 </body>
 
 </html>

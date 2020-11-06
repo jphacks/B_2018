@@ -1,5 +1,6 @@
 body {
     background-color: #a86f4c;
+    box-sizing: border-box;
 }
 
 #top {
@@ -17,7 +18,8 @@ body {
     align-items: center;
 }
 
-h2 {
+.recommend {
+    margin: 10px 10px;
     padding: 1rem 2rem;
     background: #aacf53;
     -webkit-box-shadow: 5px 5px 0 #928c36;
@@ -42,6 +44,7 @@ h2 {
     grid-template-rows: 200px;
     grid-template-columns: repeat(auto-fit, 200px);
     justify-content: space-evenly;
+    margin: 20px auto;
 }
 
 .box {
@@ -54,6 +57,8 @@ h2 {
     border-radius: 10px;
     /*角の丸み*/
     position: relative;
+    padding: 3px;
+    text-align: center;
 }
 
 .box a {

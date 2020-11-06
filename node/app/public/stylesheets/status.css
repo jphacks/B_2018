@@ -7,7 +7,7 @@ body {
     /* グリッドレイアウト */
     grid-template-rows: 200px 200px;
     grid-template-columns: 10px 1fr 10px;
-     grid-row-gap: 10px;
+    grid-row-gap: 10px;
     grid-column-gap: 30px;
 }
 

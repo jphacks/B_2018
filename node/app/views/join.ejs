@@ -4,6 +4,15 @@
         <title><%= title %></title>
     </head>
     <body>
+        <% if (messages.danger) { %>
+            <span style="color: #f32013"><%- messages.danger %></span>
+        <% } %>
+        <% if (messages.warning) { %>
+            <span style="color: #ffcc00"><%- messages.warning %></span>
+        <% } %>
+        <% if (messages.success) { %>
+            <span style="color: #4bb543"><%- messages.success %></span>
+        <% } %>
         <form action="/join" method="POST">
             email:
             <input type="email" name="email">

@@ -12,26 +12,42 @@
       <%- include('header.ejs') %>
     </header>
     <main>
-      <div class="titlearea">
-        <h3>検索文字列:
-        <%= search.values[0] %></h3>
+      <% if (!(search == undefined)){ %>
+      <div id="posttime">
+        <div class="titlearea">
+          <h3>検索文字列:
+          <%= search.values[0] %></h3>
+        </div>
+        <div class="index-table-wrapper">
+          <ul class="table-body" style="list-style: none">
+          <% recipes.forEach((recipe) => { %>
+            <li>
+              <table>
+                <td style="width: 100px">
+                  <%= recipe.name %>
+                </td>
+                <td>
+                  <%= recipe.description %>
+                </td>
+              </table>
+            </li>
+            <% }) %>
+          </ul>
+        </div>
       </div>
-      <div class="index-table-wrapper">
-        <ul class="table-body" style="list-style: none">
-        <% recipes.forEach((recipe) => { %>
-          <li>
-            <table>
-              <td style="width: 100px">
-                <%= recipe.name %>
-              </td>
-              <td>
-                <%= recipe.description %>
-              </td>
-            </table>
-          </li>
-          <% }) %>
-        </ul>
+      <% } %>
+      <% if (search == undefined ){ %>
+      <div id="gettime">
+        <div class="titlearea">
+          <h3>検索文字列:
+            <span style="color: lightgrey">検索結果が入ります</span>
+          </h3>
+        </div>
+        <div style="font-size: 40px;">
+          <span style="color: lightgrey">右上の検索バーからレシピが検索出来ます</span>
+        </div>
       </div>
+      <% } %>
     </main>
     <footer>
       <%- include('footer.ejs') %>

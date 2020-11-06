@@ -45,13 +45,13 @@ router.post('/join', async function (req, res) {
     await client.query('BEGIN')
     var pwd = await bcrypt.hash(req.body.password, 5);
     await JSON.stringify(
-      client.query('SELECT userid FROM cookhack.User WHERE "email"=$1', [req.body.username], function(err, result) {
+      client.query('SELECT userid FROM cookhack.User WHERE "email"=$1', [req.body.email], function(err, result) {
         if (result && result.rows[0]) {
           req.flash('warning', "This email address is already registered. <a href='/login'>Log in!</a>")
           res.redirect('/join');
         } else {
           client.query(
-            'INSERT INTO cookhack.User (userid, name, email, password) VALUES ($1, $2, $3, $4)',
+            "INSERT INTO cookhack.User (userid, name, email, password) VALUES ($1, $2, $3, $4)",
             [uuidv4(), req.body.username, req.body.email, pwd],
             function (err, result) {
               if (err) {
@@ -62,10 +62,28 @@ router.post('/join', async function (req, res) {
                 console.log(result)
                 req.flash('success', 'User created')
                 res.redirect('/login');
-                return;
               }
             }
+          )
+          client.query("INSERT INTO cookhack.UsersCarbohydrate \
+            (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)\
+            VALUES \
+            ((SELECT userid from cookhack.User where name = $1),       0,      0,       0,         0,        0,      0,        0)",
+            [req.body.username]
           );
+          client.query("INSERT INTO cookhack.UsersProtein  \
+            (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)\
+            VALUES \
+            ((SELECT userid from cookhack.User where name = $1),       0,      0,       0,         0,        0,      0,        0)",
+            [req.body.username]
+          );
+          client.query("INSERT INTO cookhack.UsersLipid \
+            (userid, sunday, monday, tuesday, wednesday, thursday, friday, saturday)\
+            VALUES \
+            ((SELECT userid from cookhack.User where name = $1),       0,      0,       0,         0,        0,      0,        0)",
+            [req.body.username]
+          );
+          return;
         }
       })
     )
@@ -134,13 +152,19 @@ router.get('/status', function(req, res, next){
 });
 
 router.get('/search', function(req, res){
-  res.render('search');
+  res.render('search', { recipes: undefined, search: undefined });
 });
 
 router.get('/menu/:id', function(req, res){
   console.log(req.params.id);
   var query = {
-    text: 'SELECT recipe.name as recipe_name, recipe.description, food.name as food_name, food.gram, food.carbohydrate, food.protein, food.lipid FROM cookhack.recipe RIGHT JOIN ( SELECT finr.recipe_id, fstuff.name, fstuff.carbohydrate, fstuff.protein, fstuff.lipid, finr.gram FROM cookhack.foodstuffincludedrecipe as finr LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $1',
+    text: 'SELECT recipe.name as recipe_name, recipe.description, food.name as food_name, food.gram, food.carbohydrate, food.protein, food.lipid FROM cookhack.recipe \
+          RIGHT JOIN ( \
+            SELECT finr.recipe_id, fstuff.name, fstuff.carbohydrate, fstuff.protein, fstuff.lipid, finr.gram \
+            FROM cookhack.foodstuffincludedrecipe as finr \
+            LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
+          ) as food ON recipe.id = food.recipe_id \
+          WHERE recipe.id = $1',
     values: [ req.params.id ],
   };
   pool.connect((err, client) => {
@@ -153,7 +177,7 @@ router.get('/menu/:id', function(req, res){
         var description = result.rows[0].description;
         console.log(typeof description);
         description = description.replace(/\\n/g, '\n');
-        res.render('menu', { recipe_data: result.rows, menu: result.rows[0].recipe_name, description: description });
+        res.render('menu', { request_id: req.params.id, recipe_data: result.rows, menu: result.rows[0].recipe_name, description: description });
       });
     }
   });
@@ -185,6 +209,49 @@ router.post('/search', (req, res) => {
     }else{
       client.query(query, function(err, result){
         res.render('search', { recipes: result.rows, search: query });
+      });
+    }
+  });
+});
+
+router.post('/menu/:id', (req, res) => {
+  var date = new Date();
+  var dayOfWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"][date.getDay()];
+  var query = {
+    text: "UPDATE cookhack.userscarbohydrate SET $1 = ($1)+( \
+            SELECT sum(food.gram*food.carbohydrate/100) FROM cookhack.recipe \
+            RIGHT JOIN( \
+              SELECT finr.recipe_id, fstuff.carbohydrate, finr.gram \
+              FROM cookhack.foodstuffincludedrecipe as finr \
+              LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
+            ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $2 \
+          ) WHERE userid = 'Tanya'; \
+          UPDATE cookhack.usersprotein SET $1 = ($1)+( \
+            SELECT sum(food.gram*food.protein/100) FROM cookhack.recipe \
+            RIGHT JOIN( \
+              SELECT finr.recipe_id, fstuff.protein, finr.gram \
+              FROM cookhack.foodstuffincludedrecipe as finr \
+              LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
+            ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $2 \
+          ) WHERE userid = 'Tanya'; \
+          UPDATE cookhack.userslipid SET $1 = ($1)+( \
+            SELECT sum(food.gram*food.lipid/100) FROM cookhack.recipe \
+            RIGHT JOIN( \
+              SELECT finr.recipe_id, fstuff.lipid, finr.gram \
+              FROM cookhack.foodstuffincludedrecipe as finr \
+              LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
+            ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $2 \
+          ) WHERE userid = 'Tanya'; ",
+    values: [ dayOfWeek, req.param.id,/*, req.user */],
+  };
+  pool.connect((err, client) => {
+    if(err){
+      console.log(err);
+      res.redirect('/menu/'+req.param.id);
+    }else{
+      client.query(query,(err, result)=>{
+        if(err)console.log(err);
+        res.redirect('/status');
       });
     }
   });

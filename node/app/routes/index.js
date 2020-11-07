@@ -194,7 +194,6 @@ router.get('/menu/:id', function(req, res){
     }else{
       client.query(query, (err, result) => {
         var description = result.rows[0].description.split('\\n');
-        console.log(typeof description);
         //description = description.replace(/\\n/g, '\n');
         res.render('menu', { request_id: req.params.id, recipe_data: result.rows, menu: result.rows[0].recipe_name, description: description });
       });
@@ -216,7 +215,12 @@ router.post('/login', passport.authenticate('local', {
 
 router.post('/search', (req, res) => {
   var query = {
-    text: 'SELECT * FROM cookhack.Recipe WHERE name = $1',
+    text: 'SELECT recipe.id, recipe.name, recipe.description, food.carbohydrate, food.protein, food.lipid, food.gram FROM cookhack.Recipe \
+    RIGHT JOIN ( \
+      SELECT finr.recipe_id, fstuff.carbohydrate, fstuff.protein, fstuff.lipid, finr.gram \
+      FROM cookhack.foodstuffincludedrecipe as finr \
+      LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
+    ) as food ON recipe.id = food.recipe_id WHERE recipe.name = $1',
     values: [ req.body.searchword ],
   };
 
@@ -227,7 +231,26 @@ router.post('/search', (req, res) => {
       return;
     }else{
       client.query(query, function(err, result){
-        res.render('search', { recipes: result.rows, search: query });
+        if(err)console.log(err);
+        var recipe_id_set = new Set();
+        var recipe_set = new Array();
+        var carbohydrate = {};
+        var protein = {};
+        var lipid = {};
+        result.rows.forEach(row => {
+          if(!(recipe_id_set.has(row.id))){
+            recipe_id_set.add(row.id);
+            recipe_set.push({id: row.id, name: row.name, description: row.description.replace(/\\n/g, '\n')});
+            carbohydrate[row.id] = 0.0;
+            protein[row.id] = 0.0;
+            lipid[row.id] = 0.0;
+          }
+          carbohydrate[row.id] += row.carbohydrate*row.gram/100;
+          protein[row.id] += row.protein*row.gram/100;
+          lipid[row.id] += row.lipid*row.gram/100;
+        });
+        console.log(carbohydrate);
+        res.render('search', { recipes: result.rows, recipe_set: recipe_set, search: query, carbohydrate: carbohydrate, protein: protein, lipid: lipid});
       });
     }
   });

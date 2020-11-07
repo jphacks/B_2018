@@ -1,58 +1,61 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Search</title>
-    <link href="https://fonts.googleapis.com/css?family=Sawarabi+Mincho" rel="stylesheet">
-    <link rel='stylesheet' href='/stylesheets/reset.css' />
-    <link rel='stylesheet' href='/stylesheets/search.css' />
-    <script src="/send_url.js"></script>
-  </head>
-  <body>
-    <%- include('header.ejs') %>
-    <main>
-      <% if (!(search == undefined)){ %>
-      <div id="posttime">
-        <div class="titlearea">
-          <h3>検索文字列: <%= search.values[0] %></h3>
-        </div>
-        <div class="index-table-wrapper">
-          <ul class="table-body" style="list-style: none">
+
+<head>
+  <meta charset="utf-8">
+  <title>Search</title>
+  <link href="https://fonts.googleapis.com/css?family=Sawarabi+Mincho" rel="stylesheet">
+  <link rel='stylesheet' href='/stylesheets/reset.css' />
+  <link rel='stylesheet' href='/stylesheets/search.css' />
+  <script src="/send_url.js"></script>
+</head>
+
+<body>
+  <%- include('header.ejs') %>
+  <main>
+    <% if (!(search == undefined)){ %>
+    <div id="posttime">
+      <div class="titlearea">
+        <h3>検索文字列: <%= search.values[0] %></h3>
+      </div>
+      <div class="index-table-wrapper" id="box">
+        <ul class="table-body" style="list-style: none">
           <% recipe_set.forEach(recipe => { %>
-            <li>
-              <table>
-                <td style="width: 100px">
-                  <a href="/menu/<%= recipe.id %>"><%= recipe.name %></a>
-                </td>
-                <td>
-                  炭水化物:<%= carbohydrate[recipe.id] %>
-                </td>
-                <td>
-                  タンパク質:<%= protein[recipe.id] %>
-                </td>
-                <td>
-                  脂質:<%= lipid[recipe.id] %>
-                </td>
-              </table>
-            </li>
-            <% }) %>
-          </ul>
-        </div>
+          <li>
+            <table>
+              <td style="width: 100px">
+                <a href="/menu/<%= recipe.id %>"><%= recipe.name %></a>
+              </td>
+              <td>
+                炭水化物:<%= carbohydrate[recipe.id] %>
+              </td>
+              <td>
+                タンパク質:<%= protein[recipe.id] %>
+              </td>
+              <td>
+                脂質:<%= lipid[recipe.id] %>
+              </td>
+            </table>
+          </li>
+          <% }) %>
+        </ul>
       </div>
-      <% } %>
-      <% if (search == undefined ){ %>
-      <div id="gettime">
-        <div class="titlearea">
-          <h3>検索文字列:
-            <span style="color: lightgrey">検索結果が入ります</span>
-          </h3>
-        </div>
-        <div style="font-size: 40px;">
-          <span style="color: lightgrey">右上の検索バーからレシピが検索出来ます</span>
-        </div>
+    </div>
+    <% } %>
+    <% if (search == undefined ){ %>
+    <div id="gettime">
+      <div class="titlearea">
+        <h3>検索文字列:
+          <span style="color: lightgrey">検索結果が入ります</span>
+        </h3>
       </div>
-      <% } %>
-    </main>
-    <%- include('footer.ejs') %>
-  </body>
+      <div style="font-size: 40px;">
+        <span style="color: lightgrey">右上の検索バーからレシピが検索出来ます</span>
+      </div>
+    </div>
+    <% } %>
+  </main>
+  <%- include('footer.ejs') %>
+</body>
+
 </html>

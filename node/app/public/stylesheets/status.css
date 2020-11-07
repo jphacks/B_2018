@@ -5,33 +5,19 @@ body {
 #container {
     display: grid;
     /* グリッドレイアウト */
-    grid-template-rows: 50px 200px 200px 100px;
+    grid-template-rows: 200px 200px;
     grid-template-columns: 10px 1fr 10px;
-    /*
-    justify-content: space-between;
-     align-content: space-between;
-    */
     grid-row-gap: 10px;
     grid-column-gap: 30px;
 }
-
 .center_1 {
     grid-column: 2/3;
-    grid-row: 2/4;
+    grid-row: 1/2;
 }
 .center_2 {
     grid-column: 2/3;
-    grid-row: 3/4;
+    grid-row: 2/2;
 }
-header {
-    grid-column: 2/3;
-    grid-row: 1/4;
-}
-footer {
-    grid-column: 2/3;
-    grid-row: 4/4;
-}
-
 .box {
     font-weight: bold;
     color:#FFF ;/*文字色*/

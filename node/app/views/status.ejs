@@ -19,9 +19,9 @@
                         type: "column",
                         name: "First Quarter",
                         dataPoints: [
-                            { label: "炭水化物", y: 58 },
-                            { label: "タンパク質", y: 69 },
-                            { label: "脂質", y: 80 },
+                            { label: "炭水化物", y: user_data.carb_sum },
+                            { label: "タンパク質", y: user_data.prot_sum },
+                            { label: "脂質", y: user_data.lipid_sum },
                         ]
                     },
                     { //dataSeries - second quarter
@@ -30,8 +30,8 @@
                         name: "Second Quarter",
                         dataPoints: [
                             { label: "炭水化物", y: 58 },
-                            { label: "タンパク質", y: 69 },
-                            { label: "脂質", y: 80 },
+                            { label: "タンパク質", y: 50 },
+                            { label: "脂質", y: 25 },
                         ]
                     }
                 ]
@@ -48,9 +48,9 @@
                         name: "月曜日",
                         showInLegend: true,
                         dataPoints: [
-                            { label: "炭水化物", y: 58 },
-                            { label: "タンパク質", y: 69 },
-                            { label: "脂質", y: 80 },
+                            { label: "炭水化物", y: user_data.carb_mon },
+                            { label: "タンパク質", y: user_data.prot_mon },
+                            { label: "脂質", y: user_data.lipid_mon },
 
                         ]
                     },
@@ -61,9 +61,9 @@
                         name: "火曜日",
                         showInLegend: true,
                         dataPoints: [
-                            { label: "炭水化物", y: 58 },
-                            { label: "タンパク質", y: 69 },
-                            { label: "脂質", y: 80 },
+                            { label: "炭水化物", y: user_data.carb_tue },
+                            { label: "タンパク質", y: user_data.prot_tue },
+                            { label: "脂質", y: user_data.lipid_tue },
 
                         ]
                     },
@@ -73,9 +73,9 @@
                         name: "水曜日",
                         showInLegend: true,
                         dataPoints: [
-                            { label: "炭水化物", y: 58 },
-                            { label: "タンパク質", y: 69 },
-                            { label: "脂質", y: 80 },
+                            { label: "炭水化物", y: user_data.carb_wed },
+                            { label: "タンパク質", y: user_data.prot_wed },
+                            { label: "脂質", y: user_data.lipid_wed },
 
                         ]
                     },
@@ -85,9 +85,9 @@
                         name: "木曜日",
                         showInLegend: true,
                         dataPoints: [
-                            { label: "炭水化物", y: 58 },
-                            { label: "タンパク質", y: 69 },
-                            { label: "脂質", y: 80 },
+                            { label: "炭水化物", y: user_data.carb_thu },
+                            { label: "タンパク質", y: user_data.prot_thu },
+                            { label: "脂質", y: user_data.lipid_thu },
 
                         ]
                     },
@@ -97,9 +97,9 @@
                         name: "金曜日",
                         showInLegend: true,
                         dataPoints: [
-                            { label: "炭水化物", y: 58 },
-                            { label: "タンパク質", y: 69 },
-                            { label: "脂質", y: 80 },
+                            { label: "炭水化物", y: user_data.carb_fri },
+                            { label: "タンパク質", y: user_data.prot_fri },
+                            { label: "脂質", y: user_data.lipid_fri },
 
                         ]
                     },
@@ -110,9 +110,9 @@
                         name: "土曜日",
                         showInLegend: true,
                         dataPoints: [
-                            { label: "炭水化物", y: 58 },
-                            { label: "タンパク質", y: 69 },
-                            { label: "脂質", y: 80 },
+                            { label: "炭水化物", y: user_data.card_sat },
+                            { label: "タンパク質", y: user_data.prot_sat },
+                            { label: "脂質", y: user_data.lipid_sat },
 
                         ]
                     },
@@ -122,9 +122,9 @@
                         name: "日曜日",
                         showInLegend: true,
                         dataPoints: [
-                            { label: "炭水化物", y: 58 },
-                            { label: "タンパク質", y: 69 },
-                            { label: "脂質", y: 80 },
+                            { label: "炭水化物", y: user_data.card_sun },
+                            { label: "タンパク質", y: user_data.prot_sun },
+                            { label: "脂質", y: user_data.lipid_sun },
 
                         ]
                     }
@@ -145,6 +145,7 @@
 
 <body>
     <%- include('header.ejs') %>
+    <h2>Status:<%= user_data.name %></h2>
     <div id="container">
 
         <div id="chartContainer" class="center_1"></div>

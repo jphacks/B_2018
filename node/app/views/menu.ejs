@@ -3,54 +3,72 @@
   <head>
     <meta charset="utf-8">
     <title>menu</title>
+    <link href="https://fonts.googleapis.com/css?family=Sawarabi+Mincho" rel="stylesheet">
     <link rel='stylesheet' href='/stylesheets/reset.css' />
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/menu.css'  />
   </head>
   <body>
     <%- include('header.ejs') %>
     <main>
       <div class="titlearea">
-        <h3>メニュー:
-        <%= menu %></h3>
+        <h3>メニュー: <%= menu %></h3>
       </div>
-      <div>
+      <div class="flex-parent">
+        <div class="image-wrapper">
+          <img src="/images/no_image.jpg">
+        </div>
+        <div class="index-table-wrapper">
+          <div>
+          <table class="foodstuff_table">
+            <tr class="content">
+              <td>素材</td>
+              <td>量</td>
+              <td>炭水化物</td>
+              <td>タンパク質</td>
+              <td>脂質</td>
+            </tr>
+            <% recipe_data.forEach(recipe => { %>
+            <tr>
+              <td style="width: 100px">
+                <%= recipe.food_name %>
+              </td>
+              <td style="width: 100px">
+                <%= recipe.gram %>g
+              </td>
+              <td style="width: 100px">
+                <%= recipe.carbohydrate %>g
+              </td>
+              <td style="width: 100px">
+                <%= recipe.protein %>g
+              </td>
+              <td style="width: 100px">
+                <%= recipe.lipid %>g
+              </td>
+            </tr>
+            <% }) %>
+          </table>
+          </div>
+        </div>
+      </div>
+      <div class="make_button">
         <form action="/menu/<%= request_id %>" method="POST">
-            <input type="submit" value="これを作る">
+            <input type="submit" value="これを作る" class="btn btn--orange btn--cubic btn--shadow">
         </form>
       </div>
-      <div class="index-table-wrapper">
-        <table style="padding: 20px;">
-          <tr>
-            <td>素材</td>
-            <td>量</td>
-            <td>炭水化物</td>
-            <td>タンパク質</td>
-            <td>脂質</td>
-          </tr>
-          <% recipe_data.forEach(recipe => { %>
-          <tr>
-            <td style="width: 100px">
-              <%= recipe.food_name %>
+      <div class="make">
+        <h3 class="subtitle">作り方</h3>
+        <% description.forEach((d,i) => {%>
+        <div>
+          <table>
+            <td>
+              <span><%= i+1 %>:</span>
             </td>
-            <td style="width: 100px">
-              <%= recipe.gram %>g
+            <td>
+              <span><%= d %></span>
             </td>
-            <td style="width: 100px">
-              <%= recipe.carbohydrate %>g
-            </td>
-            <td style="width: 100px">
-              <%= recipe.protein %>g
-            </td>
-            <td style="width: 100px">
-              <%= recipe.lipid %>g
-            </td>
-          </tr>
-          <% }) %>
-        </table>
-      </div>
-      <div>
-        <h3>作り方</h3>
-        <%= description %>
+          </table>
+        </div>
+        <% }) %>
       </div>
     </main>
     <%- include('footer.ejs') %>

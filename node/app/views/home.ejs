@@ -6,20 +6,23 @@
     <link rel='stylesheet' href='/stylesheets/reset.css' />
     <link rel='stylesheet' href='/stylesheets/home.css' />
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet">
-    <script src="/send_url.js"></script>
 </head>
 
 <body>
     <%- include('header.ejs', {user: user}) %>
-
+    <main>
     <div id="top">
-        <div class="title">
-            <h1>
-                CookHack
+        <div class="text">
+            <h1 class="title">
+                <span>CookHack</span>
             </h1>
         </div>
     </div>
+<<<<<<< HEAD
     <div class="recommend">
+=======
+    <div class="top_field">
+>>>>>>> 61351c05c630fb45c6a3e0684cae316923bdba40
         <h2>
             Recommend for you
         </h2>
@@ -36,6 +39,7 @@
             <a href="https://www.google.co.jp"></a>
         </div>
     </div>
+    </main>
     <%- include('footer.ejs') %>
 </body>
 

@@ -1,6 +1,14 @@
+html{
+    height: 100%;
+}
+
 body {
     background-color: #a86f4c;
+<<<<<<< HEAD
     box-sizing: border-box;
+=======
+    height: 100%;
+>>>>>>> 61351c05c630fb45c6a3e0684cae316923bdba40
 }
 
 #top {
@@ -12,13 +20,24 @@ body {
     background-position: 50% 50%;
 }
 
-.title {
+.text {
     display: flex;
     justify-content: center;
+    text-align: center;
     align-items: center;
+    margin: auto;
 }
 
+.title {
+    width: 120px;
+    border-bottom: 2px solid red;
+}
+
+<<<<<<< HEAD
 .recommend {
+=======
+.top_field {
+>>>>>>> 61351c05c630fb45c6a3e0684cae316923bdba40
     margin: 10px 10px;
     padding: 1rem 2rem;
     background: #aacf53;
@@ -27,8 +46,8 @@ body {
     transform: skew(-15deg);
     width: 300px;
     color: #fff;
-    font-family: "Noto Sans JP";
-    letter-spacing: 5px;
+    /*font-family: "Noto Sans JP";*/
+    letter-spacing: 1px;
 }
 
 #container_title {
@@ -39,6 +58,7 @@ body {
 }
 
 #container_menu {
+    margin: 20px 0;
     display: grid;
     /* グリッドレイアウト */
     grid-template-rows: 200px;
@@ -48,6 +68,8 @@ body {
 }
 
 .box {
+    text-align: center;
+    padding: 3px;
     font-weight: bold;
     color: #FFF;
     /*文字色*/

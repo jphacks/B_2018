@@ -5,7 +5,6 @@
     <title>menu</title>
     <link href="https://fonts.googleapis.com/css?family=Sawarabi+Mincho" rel="stylesheet">
     <link rel='stylesheet' href='/stylesheets/reset.css' />
-    <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/menu.css'  />
   </head>
   <body>
@@ -19,8 +18,9 @@
           <img src="/images/no_image.jpg">
         </div>
         <div class="index-table-wrapper">
+          <div>
           <table class="foodstuff_table">
-            <tr>
+            <tr class="content">
               <td>素材</td>
               <td>量</td>
               <td>炭水化物</td>
@@ -47,6 +47,7 @@
             </tr>
             <% }) %>
           </table>
+          </div>
         </div>
       </div>
       <div class="make_button">
@@ -54,12 +55,18 @@
             <input type="submit" value="これを作る" class="btn btn--orange btn--cubic btn--shadow">
         </form>
       </div>
-      <div>
+      <div class="make">
         <h3 class="subtitle">作り方</h3>
         <% description.forEach((d,i) => {%>
         <div>
-            <span><%= i+1 %>:</span>
-            <span><%= d %></span>
+          <table>
+            <td>
+              <span><%= i+1 %>:</span>
+            </td>
+            <td>
+              <span><%= d %></span>
+            </td>
+          </table>
         </div>
         <% }) %>
       </div>

@@ -1,12 +1,33 @@
+body{
+  box-sizing: border-box;
+  background-color: #a86f4c;
+}
+
+main {
+  padding: 10px;
+}
+
 .flex-parent {
-    display: flex;
+  display: flex;
+  margin: 20px 0;
 }
+
 .image-wrapper{
-    flex-basis: 60%;
+    flex-basis: 30%;
 }
+
+img {
+  width: 100%;
+  height: auto;
+}
+
 .index-table-wrapper {
-    flex-basis: 40%;
+  position: relative;
+  flex-basis: 55%;
+  text-align: center;
+  margin: auto;
 }
+
 .foodstuff_table {
     font-size: 1.2em;
     flex-basis: 50%;
@@ -36,17 +57,20 @@ input.btn {
   color: #212529;
   border-radius: 0.5rem;
 }
+
 input.btn--orange {
     color: #fff;
     background-color: #eb6100;
     border-bottom: 5px solid #b84c00;
 }
+
 input.btn--orange:hover {
     margin-top: 3px;
     color: #fff;
     background: #f56500;
     border-bottom: 2px solid #b84c00;
 }
+
 input.btn--shadow {
     -webkit-box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
     box-shadow: 0 3px 5px rgba(0, 0, 0, .3);
@@ -58,8 +82,22 @@ div.titlearea {
     font-family: "Sawarabi Mincho";
 }
 
+.make{
+  margin: 20px 0;
+}
+
 .subtitle {
+    margin: 10px 0;
     font-size: 2em;
     font-weight: 600;
     font-family: "Sawarabi Mincho";
+}
+
+.index-table-wrapper td {
+  height: 23px;
+  line-height: 23px;
+}
+
+.content {
+  border-bottom: 1px solid black
 }

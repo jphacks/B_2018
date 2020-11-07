@@ -183,7 +183,7 @@ router.get('/menu/:id', function(req, res){
             FROM cookhack.foodstuffincludedrecipe as finr \
             LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
           ) as food ON recipe.id = food.recipe_id \
-          WHERE recipe.id = $1',
+          WHERE recipe.id = ($1)',
     values: [ req.params.id ],
   };
   pool.connect((err, client) => {
@@ -220,7 +220,7 @@ router.post('/search', (req, res) => {
       SELECT finr.recipe_id, fstuff.carbohydrate, fstuff.protein, fstuff.lipid, finr.gram \
       FROM cookhack.foodstuffincludedrecipe as finr \
       LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
-    ) as food ON recipe.id = food.recipe_id WHERE recipe.name = $1',
+    ) as food ON recipe.id = food.recipe_id WHERE recipe.name = ($1)',
     values: [ req.body.searchword ],
   };
 
@@ -266,9 +266,9 @@ router.post('/menu/:id', ensureAuthentication, (req, res) => {
               SELECT finr.recipe_id, fstuff.carbohydrate, finr.gram \
               FROM cookhack.foodstuffincludedrecipe as finr \
               LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
-            ) as food ON recipe.id = food.recipe_id WHERE recipe.id = $1 \
+            ) as food ON recipe.id = food.recipe_id WHERE recipe.id = ($1) \
           ) WHERE userid = (\
-            SELECT userid from cookhack.User where email = $2\
+            SELECT userid from cookhack.User where email = ($2)\
           )",
     values: [ req.params.id, req.user.email ],
   };

@@ -1,0 +1,14 @@
+footer{
+  width: 100%;
+  margin: auto;
+  padding: 0;
+}
+
+footer > div{
+  background-color: black;
+  color: white;
+  height: 20px;
+  padding: 10px 0;
+  margin: 0;
+  text-align: center;
+}

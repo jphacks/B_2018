@@ -1,0 +1,15 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
+  config:
+    POSTGRES_USER: root
+    POSTGRES_PASSWORD: password
+    POSTGRES_DB: cookhack
+build:
+  docker:
+    web: ./node/Dockerfile
+  config:
+    WORKDIR: /app
+run:
+  web: node start

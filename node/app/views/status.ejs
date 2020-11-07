@@ -4,19 +4,154 @@
 <head>
     <meta charset="utf-8">
     <title>Status</title>
+    <link rel='stylesheet' href='/stylesheets/reset.css' />
     <link rel="stylesheet" href="/stylesheets/status.css">
-    <script src="/send_url.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            const chart = new CanvasJS.Chart("chartContainer", {
+                title: {
+                    text: "必要量と摂取量を比較"
+                },
+                data: [  //array of dataSeries     
+                    { //dataSeries - first quarter
+                        /*** Change type "column" to "bar", "area", "line" or "pie"***/
+                        type: "column",
+                        name: "First Quarter",
+                        dataPoints: [
+                            { label: "炭水化物", y: user_data.carb_sum },
+                            { label: "タンパク質", y: user_data.prot_sum },
+                            { label: "脂質", y: user_data.lipid_sum },
+                        ]
+                    },
+                    { //dataSeries - second quarter
+
+                        type: "column",
+                        name: "Second Quarter",
+                        dataPoints: [
+                            { label: "炭水化物", y: 58 },
+                            { label: "タンパク質", y: 50 },
+                            { label: "脂質", y: 25 },
+                        ]
+                    }
+                ]
+            });
+            const chart_weeks = new CanvasJS.Chart("chart_week", {
+                title: {
+                    text: "曜日ごとの栄養素別摂取量比較"
+                },
+
+                data: [  //array of dataSeries     
+                    { //dataSeries - first quarter
+                        /*** Change type "column" to "bar", "area", "line" or "pie"***/
+                        type: "column",
+                        name: "月曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: user_data.carb_mon },
+                            { label: "タンパク質", y: user_data.prot_mon },
+                            { label: "脂質", y: user_data.lipid_mon },
+
+                        ]
+                    },
+
+                    { //dataSeries - second quarter
+
+                        type: "column",
+                        name: "火曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: user_data.carb_tue },
+                            { label: "タンパク質", y: user_data.prot_tue },
+                            { label: "脂質", y: user_data.lipid_tue },
+
+                        ]
+                    },
+                    { //dataSeries - Third quarter
+
+                        type: "column",
+                        name: "水曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: user_data.carb_wed },
+                            { label: "タンパク質", y: user_data.prot_wed },
+                            { label: "脂質", y: user_data.lipid_wed },
+
+                        ]
+                    },
+                    { //dataSeries - Third quarter
+
+                        type: "column",
+                        name: "木曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: user_data.carb_thu },
+                            { label: "タンパク質", y: user_data.prot_thu },
+                            { label: "脂質", y: user_data.lipid_thu },
+
+                        ]
+                    },
+                    { //dataSeries - Third quarter
+
+                        type: "column",
+                        name: "金曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: user_data.carb_fri },
+                            { label: "タンパク質", y: user_data.prot_fri },
+                            { label: "脂質", y: user_data.lipid_fri },
+
+                        ]
+                    },
+
+                    { //dataSeries - Third quarter
+
+                        type: "column",
+                        name: "土曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: user_data.card_sat },
+                            { label: "タンパク質", y: user_data.prot_sat },
+                            { label: "脂質", y: user_data.lipid_sat },
+
+                        ]
+                    },
+                    { //dataSeries - Third quarter
+
+                        type: "column",
+                        name: "日曜日",
+                        showInLegend: true,
+                        dataPoints: [
+                            { label: "炭水化物", y: user_data.card_sun },
+                            { label: "タンパク質", y: user_data.prot_sun },
+                            { label: "脂質", y: user_data.lipid_sun },
+
+                        ]
+                    }
+
+                ],
+                /** Set axisY properties here*/
+                axisY: {
+                    prefix: "$",
+                    suffix: "K"
+                }
+            });
+            chart.render();
+            chart_weeks.render();
+        }        
+    </script>
+
 </head>
 
 <body>
-    <header>
-        <!-- partial -->
-        <%- include('header.ejs') %>
-    </header>
+    <%- include('header.ejs') %>
+    <h2>Status:<%= user_data.name %></h2>
+    <div id="container">
 
-    <footer>
-        <%- include('footer.ejs') %>
-    </footer>
+        <div id="chartContainer" class="center_1"></div>
+        <div id="chart_week" class="center_2"></div>
+    </div>
+    <%- include('footer.ejs') %>
 
 </body>
 

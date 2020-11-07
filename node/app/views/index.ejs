@@ -2,18 +2,14 @@
 <html>
   <head>
     <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/reset.css' />
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <header>
-      <!-- partial -->
-      <%- include('header.ejs') %>
-    </header>
+    <%- include('header.ejs') %>
 
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
-    <footer>
-      <%- include('footer.ejs') %>
-    </footer>
+    <%- include('footer.ejs') %>
   </body>
 </html>

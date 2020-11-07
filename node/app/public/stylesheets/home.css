@@ -1,33 +1,45 @@
+html{
+    height: 100%;
+}
+
 body {
     background-color: #a86f4c;
+    height: 100%;
 }
 
 #top {
     display: grid;
     grid-template-rows: 200px;
     grid-template-columns: 1fr;
-    background-image: url(../images/950242_l.jpg);
+    background-image: url(/images/950242_l.jpg);
     background-size: cover;
     background-position: 50% 50%;
 }
 
-h1 {
+.text {
     display: flex;
     justify-content: center;
+    text-align: center;
     align-items: center;
+    margin: auto;
 }
 
-h2 {
+.title {
+    width: 120px;
+    border-bottom: 2px solid red;
+}
+
+.top_field {
+    margin: 10px 10px;
     padding: 1rem 2rem;
     background: #aacf53;
     -webkit-box-shadow: 5px 5px 0 #928c36;
     box-shadow: 5px 5px 0 #928c36;
     transform: skew(-15deg);
-    width: 280px;
+    width: 300px;
     color: #fff;
-    font-family: "Noto Sans JP";
-    /*font-family: 'ヒラギノ明朝 Pro W3', 'Hiragino Mincho Pro', 'Hiragino Mincho ProN', 'HGS明朝E', 'ＭＳ Ｐ明朝', serif;*/
-    letter-spacing: 5px;
+    /*font-family: "Noto Sans JP";*/
+    letter-spacing: 1px;
 }
 
 #container_title {
@@ -38,6 +50,7 @@ h2 {
 }
 
 #container_menu {
+    margin: 20px 0;
     display: grid;
     /* グリッドレイアウト */
     grid-template-rows: 200px;
@@ -46,6 +59,8 @@ h2 {
 }
 
 .box {
+    text-align: center;
+    padding: 3px;
     font-weight: bold;
     color: #FFF;
     /*文字色*/

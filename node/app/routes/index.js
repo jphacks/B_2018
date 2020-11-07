@@ -56,6 +56,7 @@ router.post('/join', async function (req, res) {
             function (err, result) {
               if (err) {
                 console.log(err);
+                client.query('ROLLBACK');
               } else {
                 client.query('COMMIT');
                 console.log(result)
@@ -123,6 +124,7 @@ router.get('/logout', (req, res) => {
 router.get('/home', ensureAuthentication, (req, res)=>{
   var query = {
     text: 'SELECT recipe.id, recipe.name FROM cookhack.recipe',
+    
   };
   pool.connect((err, client) => {
     if(err){
@@ -132,14 +134,40 @@ router.get('/home', ensureAuthentication, (req, res)=>{
       client.query(query, (err, result) => {
         console.log("here");
         console.log(req.user)
+        console.log(result.rows)
         res.render('home', {recipes: result.rows, user: req.user});
       });
     }
   });
 });
 
-router.get('/status', function(req, res, next){
-  res.render('status');
+router.get('/status', ensureAuthentication, function(req, res, next){
+  var query = {
+    text: "SELECT u.name, \
+                  (carb.sunday+carb.monday+carb.tuesday+carb.wednesday+carb.thursday+carb.friday+carb.saturday) as carb_sum,\
+                  carb.sunday as carb_sun, carb.monday as carb_mon, carb.tuesday as carb_tue, carb.wednesday as carb_wed, carb.thursday as carb_thu, carb.friday as carb_fri, carb.saturday as carb_sat, \
+                  (prot.sunday+prot.monday+prot.tuesday+prot.wednesday+prot.thursday+prot.friday+prot.saturday) as prot_sum,\
+                  prot.sunday as prot_sun, prot.monday as prot_mon, prot.tuesday as prot_tue, prot.wednesday as prot_wed, prot.thursday as prot_thu, prot.friday as prot_fri, prot.saturday as prot_sat, \
+                  (lipid.sunday+lipid.monday+lipid.tuesday+lipid.wednesday+lipid.thursday+lipid.friday+lipid.saturday) as lipid_sum,\
+                  lipid.sunday as lipid_sun, lipid.monday as lipid_mon, lipid.tuesday as lipid_tue, lipid.wednesday as lipid_wed, lipid.thursday as lipid_thu, lipid.friday as lipid_fri, lipid.saturday as lipid_sat \
+          FROM cookhack.user as u\
+          LEFT JOIN cookhack.userscarbohydrate as carb ON u.userid = carb.userid\
+          LEFT JOIN cookhack.usersprotein as prot ON u.userid = prot.userid\
+          LEFT JOIN cookhack.userslipid as lipid ON u.userid = lipid.userid\
+          WHERE u.email = $1 ",
+    values: [ req.user.email ]
+  };
+  pool.connect((err, client) => {
+    if(err){
+      console.log(err);
+      res.redirect('/');
+      return;
+    }
+    client.query(query, (err, result) => {
+      if(err)console.log(err);
+      res.render('status',{user_data: result.rows[0]});
+    });
+  });
 });
 
 router.get('/search', function(req, res){
@@ -165,9 +193,8 @@ router.get('/menu/:id', function(req, res){
       return;
     }else{
       client.query(query, (err, result) => {
-        var description = result.rows[0].description;
-        console.log(typeof description);
-        description = description.replace(/\\n/g, '\n');
+        var description = result.rows[0].description.split('\\n');
+        //description = description.replace(/\\n/g, '\n');
         res.render('menu', { request_id: req.params.id, recipe_data: result.rows, menu: result.rows[0].recipe_name, description: description });
       });
     }
@@ -188,7 +215,12 @@ router.post('/login', passport.authenticate('local', {
 
 router.post('/search', (req, res) => {
   var query = {
-    text: 'SELECT * FROM cookhack.Recipe WHERE name = $1',
+    text: 'SELECT recipe.id, recipe.name, recipe.description, food.carbohydrate, food.protein, food.lipid, food.gram FROM cookhack.Recipe \
+    RIGHT JOIN ( \
+      SELECT finr.recipe_id, fstuff.carbohydrate, fstuff.protein, fstuff.lipid, finr.gram \
+      FROM cookhack.foodstuffincludedrecipe as finr \
+      LEFT JOIN cookhack.foodstuff as fstuff ON finr.foodstuff_id = fstuff.id \
+    ) as food ON recipe.id = food.recipe_id WHERE recipe.name = $1',
     values: [ req.body.searchword ],
   };
 
@@ -199,7 +231,26 @@ router.post('/search', (req, res) => {
       return;
     }else{
       client.query(query, function(err, result){
-        res.render('search', { recipes: result.rows, search: query });
+        if(err)console.log(err);
+        var recipe_id_set = new Set();
+        var recipe_set = new Array();
+        var carbohydrate = {};
+        var protein = {};
+        var lipid = {};
+        result.rows.forEach(row => {
+          if(!(recipe_id_set.has(row.id))){
+            recipe_id_set.add(row.id);
+            recipe_set.push({id: row.id, name: row.name, description: row.description.replace(/\\n/g, '\n')});
+            carbohydrate[row.id] = 0.0;
+            protein[row.id] = 0.0;
+            lipid[row.id] = 0.0;
+          }
+          carbohydrate[row.id] += row.carbohydrate*row.gram/100;
+          protein[row.id] += row.protein*row.gram/100;
+          lipid[row.id] += row.lipid*row.gram/100;
+        });
+        console.log(carbohydrate);
+        res.render('search', { recipes: result.rows, recipe_set: recipe_set, search: query, carbohydrate: carbohydrate, protein: protein, lipid: lipid});
       });
     }
   });

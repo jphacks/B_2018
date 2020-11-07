@@ -1,8 +1,22 @@
 body {
-    /*background-color: #a86f4c;*/
+    background-color: #a86f4c;
 }
+
+main {
+  height: 100%;
+  padding: 20px;
+}
+
+#gettime{
+
+}
+
 .titlearea {
+  margin: 20px 0;
     font-size: 2rem;
     font-weight: 700;
     font-family: "Sawarabi Mincho";
 }
+
+.wf-hannari { font-family: "Hannari"; }
+.wf-sawarabimincho { font-family: "Sawarabi Mincho"; }
